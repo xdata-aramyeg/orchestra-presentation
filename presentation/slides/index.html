@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Teams in Claude Code</title>
+
+  <!-- reveal.js core + base theme (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="base-theme">
+
+  <!-- Google Fonts: Space Grotesk (headings), DM Sans (body), Space Mono (numeric/mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+
+  <!-- Custom Orchestra theme -->
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ====================================================== 1. TITLE -->
+      <section class="aurora-slide center" data-background-color="#1E1B4B">
+        <div class="aurora-bg"></div>
+        <div class="aurora-veil"></div>
+        <span class="kicker" style="color:#22D3EE;">Claude Code · Live Demo</span>
+        <h1 style="font-size:2.8em;">Agent Teams<br>in Claude Code</h1>
+        <hr class="rule" style="margin-left:auto;margin-right:auto;">
+        <p class="big">Watch a team of agents build a product, <strong style="color:#22D3EE;">live.</strong></p>
+        <p class="small" style="opacity:0.8;margin-top:1.2em;">A landing page + waitlist for <strong>Orchestra</strong>, built on stage while you watch these slides.</p>
+
+        <aside class="notes">
+          KICKOFF. Paste the orchestrator brief into the team lead NOW.
+          Wave 1 fans out immediately: Researcher and Designer start in parallel (async).
+          Tell the audience: "While I talk, a team of agents is building a real product in the background."
+          Keep the tmux / terminal window ready to switch to.
+        </aside>
+      </section>
+
+      <!-- ================================================== 2. THE PROBLEM -->
+      <section class="branded">
+        <span class="kicker">The problem</span>
+        <h2>One giant agent <span class="gradient-text">grades its own homework.</span></h2>
+        <hr class="rule">
+        <div class="grid cols-2" style="margin-top:0.6em;">
+          <div class="card muted-card">
+            <h3 class="violet">What goes wrong</h3>
+            <ul class="tight small">
+              <li>It writes the code <em>and</em> reviews the code.</li>
+              <li>Blind to its own assumptions — no second pair of eyes.</li>
+              <li>One context window holds everything until it overflows.</li>
+              <li>"Looks done to me." Ships the bug it just wrote.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="indigo">The thesis</h3>
+            <p>Quality isn't a prompt trick. It's <strong>structural.</strong></p>
+            <p class="big" style="margin-top:0.5em;">Quality =<br>
+              <span class="gradient-text">separation of concerns</span><br>+ <span class="gradient-text">independent review.</span></p>
+          </div>
+        </div>
+        <aside class="notes">
+          Frame the whole talk: a single model marking its own work has no adversary.
+          The fix mirrors how human teams work — split the roles, and make review independent.
+          Meanwhile: Wave 1 (Researcher + Designer) is running.
+        </aside>
+      </section>
+
+      <!-- ============================================== 3. THE FOUR PILLARS -->
+      <section class="branded">
+        <span class="kicker">How Claude Code is built</span>
+        <h2>The four pillars</h2>
+        <hr class="rule">
+        <div class="grid cols-4" style="margin-top:0.4em;">
+          <div class="pillar">
+            <svg class="icon" width="56" height="56" viewBox="0 0 24 24" fill="none">
+              <path d="M4 19V5a1 1 0 0 1 1-1h11l4 4v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" stroke="#6366F1" stroke-width="1.6"/>
+              <path d="M8 9h8M8 13h8M8 17h5" stroke="#8B5CF6" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <h3 class="indigo">Skills</h3>
+            <p><strong>The how-to.</strong> Reusable instructions that teach the model a procedure.</p>
+          </div>
+          <div class="pillar">
+            <svg class="icon" width="56" height="56" viewBox="0 0 24 24" fill="none">
+              <path d="M7 11V7a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v4m0 0V6a2 2 0 0 1 4 0v6m0-3a2 2 0 0 1 4 0v5a6 6 0 0 1-6 6h-1.5a5 5 0 0 1-4-2l-3-4c-.7-1 .8-2.4 1.8-1.5L11 13" stroke="#8B5CF6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 class="violet">MCP</h3>
+            <p><strong>The hands.</strong> Connects the model to real tools, data and live systems.</p>
+          </div>
+          <div class="pillar">
+            <svg class="icon" width="56" height="56" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="8" width="16" height="12" rx="2" stroke="#D946EF" stroke-width="1.6"/>
+              <path d="M4 11h16M9 8V6a3 3 0 0 1 6 0v2" stroke="#D946EF" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <h3 class="fuchsia">Plugins</h3>
+            <p><strong>The shareable toolbox.</strong> One install bundles skills, agents and MCP.</p>
+          </div>
+          <div class="pillar">
+            <svg class="icon" width="56" height="56" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="6" r="2.4" stroke="#22D3EE" stroke-width="1.6"/>
+              <circle cx="6" cy="17" r="2.4" stroke="#22D3EE" stroke-width="1.6"/>
+              <circle cx="18" cy="17" r="2.4" stroke="#22D3EE" stroke-width="1.6"/>
+              <path d="M12 8.4v3M12 11.4 7.4 15M12 11.4 16.6 15" stroke="#6366F1" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <h3 class="cyan">Agent Teams</h3>
+            <p><strong>The org chart.</strong> Many specialized agents, coordinated like a real team.</p>
+          </div>
+        </div>
+        <p class="center muted small" style="margin-top:0.8em;">Today is mostly about the fourth — but it stands on the other three.</p>
+        <aside class="notes">
+          Skills = knowledge, MCP = capability, Plugins = distribution, Agent Teams = coordination.
+          Keep this fast. The demo is the proof.
+        </aside>
+      </section>
+
+      <!-- ========================================= 4. MEET THE ORCHESTRA TEAM -->
+      <section class="branded">
+        <span class="kicker">The cast</span>
+        <h2>Meet the <span class="gradient-text">Orchestra</span> team</h2>
+        <table>
+          <thead>
+            <tr><th>Role</th><th>Owns</th><th>The one failure it catches</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="role">Orchestrator</td><td>Plan, waves, sync barriers</td><td>Work that drifts out of order or never converges</td></tr>
+            <tr><td class="role">Researcher / BA</td><td>Requirements, scope</td><td>Building the wrong thing, beautifully</td></tr>
+            <tr><td class="role">Designer</td><td>Style, palette, type, motion</td><td>Generic "AI slop" UI with no point of view</td></tr>
+            <tr><td class="role">Frontend</td><td>The landing page</td><td>Pixels that don't match the design intent</td></tr>
+            <tr><td class="role">Backend</td><td>Waitlist API + storage</td><td>A pretty page with nothing behind the button</td></tr>
+            <tr><td class="role">QA</td><td>Tests the real flow</td><td>"Works on my machine" — untested happy paths</td></tr>
+            <tr><td class="role">Reviewer</td><td>Reads everything last</td><td>Bugs the authors are blind to</td></tr>
+          </tbody>
+        </table>
+        <p class="center" style="margin-top:0.5em;"><span class="pill sync">read-only by design</span>&nbsp; The Reviewer <strong>cannot edit</strong> — so it can't quietly "fix" what it should be flagging.</p>
+        <aside class="notes">
+          Punchline: the Reviewer has no write access. That independence is the whole point —
+          the same reason you don't let an author approve their own pull request.
+          Status check: Wave 1 (Researcher ∥ Designer) is running right now.
+        </aside>
+      </section>
+
+      <!-- ===================================== 5. ASYNC VS SYNC (CENTERPIECE) -->
+      <section class="branded">
+        <span class="kicker">The centerpiece</span>
+        <h2>Async fan-out, <span class="accent">sync</span> barriers</h2>
+        <div class="flow" style="margin-top:0.5em;">
+          <div class="wave">
+            <span class="label">Wave 1 · async</span>
+            <span class="agent parallel">Researcher</span>
+            <span class="agent parallel">Designer</span>
+          </div>
+          <div class="barrier">BARRIER</div>
+          <div class="wave">
+            <span class="label">Wave 2 · async</span>
+            <span class="agent parallel">Frontend</span>
+            <span class="agent parallel">Backend</span>
+          </div>
+          <div class="gate">▶ GATE ▶</div>
+          <div class="wave" style="flex:0 0 auto;">
+            <span class="label">Serial · sync</span>
+            <span class="agent">QA</span>
+            <span class="agent">Reviewer</span>
+          </div>
+          <div class="live">LIVE&nbsp;🟢</div>
+        </div>
+        <div class="grid cols-2" style="margin-top:0.8em;">
+          <p class="small"><strong class="indigo">Async (the boxes):</strong> independent agents run in parallel. No waiting, no shared state — that's where the speed comes from.</p>
+          <p class="small"><strong class="accent">Sync (the bars):</strong> the orchestrator <em>waits</em> at each barrier until everything is in. That's where the quality comes from.</p>
+        </div>
+        <aside class="notes">
+          Kitchen analogy: the line cooks (Frontend, Backend) all work at once — async.
+          But the dish doesn't leave the pass until the head chef (QA, then Reviewer) checks it — sync.
+          Parallelism for speed; the barrier for quality. You need both.
+          Status: Wave 2 (Frontend ∥ Backend) is about to start / running.
+        </aside>
+      </section>
+
+      <!-- ================================================ 6. DESIGN TOOLING -->
+      <section class="branded">
+        <span class="kicker">Inside the Designer</span>
+        <h2>How a design gets <span class="gradient-text">real taste</span></h2>
+        <hr class="rule">
+        <div class="grid cols-3" style="margin-top:0.4em;">
+          <div class="card">
+            <span class="pill">1</span>
+            <h3 class="indigo" style="margin-top:0.3em;">ui-ux-pro-max</h3>
+            <p class="small">A skill that <strong>chooses</strong> the style, palette, type pairing and motion — a real design point of view, not defaults.</p>
+          </div>
+          <div class="card">
+            <span class="pill">2</span>
+            <h3 class="violet" style="margin-top:0.3em;">Figma MCP</h3>
+            <p class="small">The design <strong>lives in Figma</strong>. Agents read it back as <em>tokens</em> — colors, spacing, type — the single source of truth.</p>
+          </div>
+          <div class="card">
+            <span class="pill">3</span>
+            <h3 class="fuchsia" style="margin-top:0.3em;">21st.dev magic MCP</h3>
+            <p class="small">Generates <strong>polished components</strong> from those tokens — production-grade UI, not lorem-ipsum boxes.</p>
+          </div>
+        </div>
+        <p class="center muted small" style="margin-top:0.9em;">Taste → tokens → components. Each step hands clean, structured input to the next.</p>
+        <aside class="notes">
+          This is why the output doesn't look like generic AI. The Designer makes deliberate choices,
+          stores them as tokens in Figma, and the component generator builds from those tokens.
+          Status: Wave 2 (Frontend ∥ Backend) is running now — point at the screen if it's up.
+        </aside>
+      </section>
+
+      <!-- =============================================== 7. TMUX CONTROL ROOM -->
+      <section class="branded">
+        <span class="kicker">Watching the team</span>
+        <h2>The <span class="gradient-text">control room</span></h2>
+        <div class="grid cols-2" style="margin-top:0.4em;align-items:center;">
+          <div class="tmux">
+            <div class="pane"><span class="who">orchestrator</span>wave 2 dispatched<br><span class="run">▸ waiting at barrier…</span></div>
+            <div class="pane"><span class="who">frontend</span>hero + waitlist form<br><span class="ok">✓ build passing</span></div>
+            <div class="pane"><span class="who">backend</span>POST /api/waitlist<br><span class="run">▸ writing handler</span></div>
+            <div class="pane"><span class="who">designer</span>tokens → Figma<br><span class="ok">✓ handed off</span></div>
+            <div class="pane"><span class="who">qa</span><span class="run">▸ idle (gated)</span></div>
+            <div class="pane"><span class="who">reviewer</span><span class="run">▸ idle (gated)</span></div>
+          </div>
+          <div>
+            <ul class="tight">
+              <li>One <strong>tmux</strong> window, many panes — each agent gets its own.</li>
+              <li>See <strong>every agent at once</strong>: who's working, who's blocked, who's done.</li>
+              <li>The barrier is visible: gated agents sit idle until their turn.</li>
+              <li>No black box — you can read the team think in real time.</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Optional: switch to the real tmux session here and let the audience see live panes.
+          The mock on the left is the fallback if you'd rather not context-switch.
+          Emphasize observability: a team you can't watch is a team you can't trust.
+        </aside>
+      </section>
+
+      <!-- ==================================================== 8. PLUGINS -->
+      <section class="branded">
+        <span class="kicker">Make it portable</span>
+        <h2>Package the whole team as a <span class="gradient-text">plugin</span></h2>
+        <hr class="rule">
+        <div class="grid cols-2" style="margin-top:0.4em;">
+          <div class="card muted-card">
+            <h3 class="violet">One install bundles…</h3>
+            <ul class="tight small">
+              <li><strong>Agents</strong> — the 7 roles and their prompts</li>
+              <li><strong>Skills</strong> — ui-ux-pro-max and friends</li>
+              <li><strong>MCP servers</strong> — Figma, 21st.dev, your APIs</li>
+              <li><strong>Config</strong> — waves, gates, permissions</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="indigo">Why it matters</h3>
+            <p>Capabilities stop being <em>my setup</em> and become <strong>team infrastructure.</strong></p>
+            <p class="small muted" style="margin-top:0.4em;">A teammate runs one command and gets the exact same Orchestra — same roles, same review gates, same taste.</p>
+          </div>
+        </div>
+        <p class="center" style="margin-top:0.8em;"><span class="mono indigo">claude plugin install orchestra</span> → a whole product team, ready to go.</p>
+        <aside class="notes">
+          The handoff story: what you just watched isn't a one-off script — it's a reusable, shareable unit.
+          This is how a good agent setup spreads across an org.
+        </aside>
+      </section>
+
+      <!-- ============================================= 9. WHY IT MATTERS (BIZ) -->
+      <section class="branded">
+        <span class="kicker">For the whole room</span>
+        <h2>Why this matters</h2>
+        <hr class="rule">
+        <div class="grid cols-2" style="margin-top:0.4em;">
+          <div class="card">
+            <h3 class="indigo">Quality is structural</h3>
+            <p class="small">Independent review is built into the org chart — not left to whoever remembers to check.</p>
+          </div>
+          <div class="card">
+            <h3 class="violet">Speed from parallelism</h3>
+            <p class="small">Agents fan out and work at the same time. Wall-clock time tracks the slowest task, not the sum.</p>
+          </div>
+          <div class="card">
+            <h3 class="fuchsia">Repeatable</h3>
+            <p class="small">Same waves, same gates, every run. Outcomes you can trust and explain.</p>
+          </div>
+          <div class="card">
+            <h3 class="cyan">Shareable</h3>
+            <p class="small">Package once, hand to the team. Everyone ships at the same bar.</p>
+          </div>
+        </div>
+        <p class="center big" style="margin-top:0.8em;">A team, not a tool. <span class="gradient-text">Faster and more careful</span> — at the same time.</p>
+        <aside class="notes">
+          This is the non-engineering takeaway. Reframe in business terms: predictable quality,
+          parallel throughput, repeatable process, distributable as infrastructure.
+          Then pivot: "And the team has been building this whole time — let's go see it."
+        </aside>
+      </section>
+
+      <!-- ==================================================== 10. FINALE -->
+      <section class="aurora-slide center" data-background-color="#1E1B4B">
+        <div class="aurora-bg"></div>
+        <div class="aurora-veil"></div>
+        <span class="kicker" style="color:#22D3EE;">The reveal</span>
+        <h1 style="font-size:2.4em;">The waitlist is <span style="color:#10B981;">live.</span></h1>
+        <div class="grid cols-2" style="align-items:center;margin-top:0.6em;text-align:left;">
+          <div class="waitlist" style="margin:0 auto;">
+            <div class="field">you@onstage.dev</div>
+            <div class="cta">Join the Orchestra waitlist</div>
+            <div class="resp">✓ You're #1 on the waitlist.</div>
+          </div>
+          <div>
+            <p>A real page. A real backend. Built by a team of agents while these slides played.</p>
+            <p class="small" style="opacity:0.85;margin-top:0.5em;">Skills · MCP · Plugins · Agent Teams — that's Claude Code.</p>
+          </div>
+        </div>
+        <p class="big" style="margin-top:1em;">Thank you. <strong style="color:#22D3EE;">Now — who's next on the list?</strong></p>
+
+        <aside class="notes">
+          SWITCH to the running Orchestra site now. Submit your own email live on the form.
+          The backend should return "#1 on the waitlist" (or the live count).
+          Land the point: everything just shown was built async, gated by review, and is running for real.
+          End on this aurora slide.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- reveal.js core (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      hash: true,
+      slideNumber: 'c/t',
+      transition: 'slide',
+      transitionSpeed: 'default',
+      controls: true,
+      progress: true,
+      center: false,
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+  </script>
+</body>
+</html>

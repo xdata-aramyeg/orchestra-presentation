@@ -26,10 +26,11 @@ to do everything in one context.*
                     │   ORCHESTRATOR   │  (you, the main session)
                     └────────┬─────────┘
             spawns / routes / synchronizes
-        ┌──────────┬─────────┼─────────┬───────────┐
-        ▼          ▼         ▼         ▼           ▼
-   Researcher  Developer    QA     Reviewer   (more workers…)
-   (read+web)  (write)   (test)   (read-only)
+   ┌──────────┬──────────┬────┴─────┬──────────┬──────────┐
+   ▼          ▼          ▼          ▼          ▼          ▼
+Researcher Designer  Frontend   Backend       QA      Reviewer
+(read+web) (figma)  (page+anim) (api+db)    (test)   (read-only)
+   └─ Wave 1 ─┘      └────── Wave 2 ──────┘
 ```
 
 ---
@@ -52,16 +53,30 @@ to do everything in one context.*
 
 ## 3. Async vs. Sync — the heart of the talk
 
-### Asynchronous (fan-out)
-The orchestrator spawns multiple workers **in one turn**, each
-`run_in_background: true`. They run concurrently. The orchestrator is
-re-invoked automatically as each one reports back. Wall-clock time ≈ the slowest
-single worker, not the sum.
+The Orchestra build runs in **two async waves** with synchronous barriers between
+them. Each wave fans out independent work; each barrier verifies before the next
+wave (or gate) begins.
 
 ```
-Orchestrator: "Researcher, gather competitor dashboards (background).
-               Developer, scaffold the layout from the Figma file (background)."
-   → both run at the same time. Orchestrator does NOT block.
+WAVE 1   Researcher  ∥  Designer          ← independent: brief + design tokens
+            ══ BARRIER ══  verify the tokens + brief are real
+WAVE 2   Frontend    ∥  Backend           ← independent: landing page + waitlist API
+            ══ BARRIER ══  verify both halves complete
+            QA  ── PASS ──▶  ══ BARRIER ══  ──▶  Reviewer  ──▶  live
+```
+
+### Asynchronous (fan-out)
+The orchestrator spawns a wave's workers **in one turn**, each
+`run_in_background: true`. They run concurrently. The orchestrator is
+re-invoked automatically as each one reports back. Wall-clock time ≈ the slowest
+single worker in the wave, not the sum.
+
+```
+Wave 1 — Orchestrator: "Researcher, gather comparable launch pages (background).
+                        Designer, set the visual direction + tokens in Figma (background)."
+Wave 2 — Orchestrator: "Frontend, build the page from the tokens (background).
+                        Backend, build the waitlist API + SQLite (background)."
+   → within each wave, both run at the same time. Orchestrator does NOT block.
 ```
 
 ### Synchronous (barrier)
@@ -70,18 +85,21 @@ inserts a **checkpoint**: it waits for all relevant background work, inspects th
 results, and only then routes the next step.
 
 ```
-Orchestrator: [waits] until Developer reports "branch ready"
-              AND QA reports "tests green"
-              → ONLY THEN → SendMessage(Reviewer, "review branch X")
+Orchestrator: [waits] until Designer reports "tokens ready" (end of Wave 1)
+              → ONLY THEN → start Wave 2 (Frontend + Backend)
+              [waits] until both report "complete" AND QA reports "tests green"
+              → ONLY THEN → SendMessage(Reviewer, "review the build")
 ```
 
 This is the dashed "Orchestrator checkpoint — wait for all" line in the Orchestra
 mockup. The visual and the behavior are the same thing — that's the payoff.
 
 ### When to use which (the quality argument)
-- **Async** for independent exploration: research, scaffolding, gathering options.
-- **Sync** for dependency + quality gates: never let the Reviewer review code the
-  Developer hasn't finished; never let QA sign off on an un-built branch.
+- **Async** for independent exploration within a wave: research + design (Wave 1),
+  page + API (Wave 2).
+- **Sync** for dependency + quality gates: never start Wave 2 before the design
+  tokens are verified; never let QA sign off on an un-built feature; never let the
+  Reviewer review code QA hasn't cleared.
 
 The orchestrator is the thing that *knows the difference*. That judgment is the
 product.
@@ -93,10 +111,18 @@ product.
 Each role exists to catch a different failure class:
 
 - **Researcher / BA** — catches "we built the wrong thing."
-- **Developer** — produces the change.
-- **QA** — catches "it doesn't actually work" (tests, edge cases).
+- **Designer** — catches "it looks generic / off-brand"; owns style, palette,
+  type, motion, and real design tokens (ui-ux-pro-max + Figma MCP).
+- **Frontend** — produces the landing page from the tokens (magic MCP + Motion);
+  catches "the page doesn't match the design."
+- **Backend** — produces the waitlist API + SQLite (zod, parameterized queries);
+  catches "the signup is insecure or loses data."
+- **QA** — catches "it doesn't actually work" (tests, edge cases, Playwright E2E).
 - **Reviewer** — catches "it works but it's unsafe/unmaintainable" (read-only, so
   it can't be tempted to 'just fix it' and hide the problem).
+
+> The generic single **Developer** role is **split into Frontend + Backend** for
+> this project so the two halves build in parallel during Wave 2.
 
 Separation matters because a single agent grading its own work is the weakest
 form of QA. Independent context + independent toolset = independent judgment.

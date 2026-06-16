@@ -1,134 +1,181 @@
 # Orchestra — Live Demo Runbook
 
-The exact sequence to run on stage, with timings, copy-paste prompts, and a
-fallback for every step. Rule #1 of live demos: **every live step has a recorded
-backup.** If something hangs for >20s, switch to the backup and keep the story moving.
+The exact choreography to run on stage. The conceit: **kick the team off live, then let
+it build in the background while you present.** You narrate the async waves and the sync
+gates as they happen. Rule #1 of live demos: **every live beat has a fallback.** If
+anything slips, you can switch to the fully pre-built **golden backup** — the end state
+is identical, so the story still lands.
 
 ---
 
 ## Pre-flight (do this BEFORE you present)
 
-- [ ] `tmux -V` works (3.x). Run `bash orchestra-team/scripts/tmux-orchestra.sh` once
-      to confirm the layout builds, then `... kill`.
-- [ ] Figma MCP connected and authenticated (`whoami` returns you). Have a target
-      Figma file open.
-- [ ] Claude Design reachable; **pre-generate** the Orchestra dashboard once and save
-      the image as `backup/orchestra-dashboard.png`.
-- [ ] Pre-record a 60–90s screen capture of the full tmux run as
-      `backup/tmux-run.mp4` (the single most important backup).
-- [ ] Terminal font bumped to ~18–20pt. Dark theme. Hide notifications / Slack.
-- [ ] `orchestra-team/` open in your editor with `AGENTS.md` and one agent file
-      visible.
-- [ ] Pin this runbook on a second screen / phone.
+**The app**
+- [ ] `cd orchestra-site && npm run dev` serves the base app at `localhost:3000`. Hero
+      animates, sections render. Leave it running.
+- [ ] SQLite is **writable**: submit a test email through the form → row persists →
+      counter increments on refresh. Then **reset** the table so the live counter starts
+      clean (note your reset command).
+- [ ] The **golden backup** (`orchestra-site` with the waitlist feature already complete)
+      is checked out / copied somewhere you can switch to in one command. Confirm it runs.
+
+**The tools the team needs**
+- [ ] Playwright installed (`npx playwright install` done) — QA depends on it.
+- [ ] Figma MCP connected + authenticated (`whoami` returns you). Target Figma file open.
+- [ ] magic MCP (21st.dev) reachable — do one throwaway `21st_magic_component_builder`
+      call to confirm it answers.
+- [ ] ui-ux-pro-max skill available (it already chose the direction in DESIGN.md; the
+      Designer re-runs it live, but the output is pre-known).
+
+**The room**
+- [ ] tmux 3.x: run `bash orchestra-team/scripts/tmux-orchestra.sh` once to confirm the
+      7-pane layout builds, then `... kill`.
+- [ ] The **deck opens** (`presentation/slides/index.html`) and arrow-key nav works.
+- [ ] Terminal font ~18–20pt. Notifications / Slack off. Browser zoomed for the back row.
+- [ ] `KICKOFF-PROMPT.md` open and ready to paste. This runbook pinned on a 2nd screen.
+
+**Backups staged** (so you never improvise a recovery)
+- [ ] `backup/figma-tokens.png` — a `get_variable_defs` / design-context screenshot.
+- [ ] `backup/tmux-run.mp4` — a 60–90s recording of a full async/sync run.
+- [ ] `backup/orchestra-final.png` (or the golden app itself) — the finished site.
 
 ---
 
-## DEMO 1 — Design with taste  (~3–4 min)
+## Beat 0 — Kickoff (live)  (~2 min)
 
-**Goal:** generate the Orchestra dashboard, and make the *taste* visible.
+**Goal:** start the team in front of the audience; everything after this builds in the
+background.
 
-1. Open `presentation/03-DESIGN-PROMPTS.md`. Read the **Design Read** line aloud —
-   that one sentence is the teaching moment.
-2. Paste **Prompt 1** into Claude Design. Generate.
-3. While it renders, narrate the locked tokens: "single terracotta accent, Geist Mono
-   for data, no AI-purple, no glass-everywhere."
-4. When it lands: "Intentional, not templated. That's the difference a design read +
-   locked palette make."
+1. (Optional) run `/spin-up-orchestra` first if you want the team assembled before the
+   brief.
+2. Read the **spoken intro** from `KICKOFF-PROMPT.md` (~15s, English or Russian).
+3. Paste **The Prompt** from `KICKOFF-PROMPT.md` into the orchestrator pane. Do **not**
+   re-type it — it's the rehearsed brief that drives the two waves and the gate.
+4. Confirm the orchestrator announces **"fanning out Wave 1 — Researcher and Designer."**
+   That sentence is your signal the demo is alive. Move to slides.
 
-**If it drifts** (adds a color / bad H1 wrap): type the correction line live —
-*"Re-read: single terracotta accent only, Geist Mono for data, kill the glass."* —
-and show it self-correct. (A *great* moment if it happens; don't force it.)
-
-**Fallback:** show `backup/orchestra-dashboard.png`.
-
----
-
-## DEMO 2 — MCP: design → Figma → tokens  (~3–4 min)
-
-**Goal:** prove Claude reaches into a real tool and reads real design data.
-
-1. "Now I'll push this into Figma — and more importantly, have Claude *read it back*."
-2. Trigger the Figma MCP flow (load the `figma-use` skill first — it's mandatory
-   before `use_figma`). Recreate/import the dashboard, OR open an existing Figma file.
-3. Ask Claude to **get the design context / variables** and show the output: real
-   hex values, spacing, the terracotta token.
-4. Land it: "That's not a guess from a screenshot. Through MCP, Claude is reading the
-   actual tokens — and can turn them into code that matches the design exactly."
-
-**Fallback:** screenshot of a prior `get_variable_defs` / design-context output.
+**Fallback:** if the orchestrator stalls on kickoff, paste the prompt once more; if it
+still won't start, say "here's a run I did earlier," play `backup/tmux-run.mp4`, and
+present over it. The slides + finale (golden backup) still carry the talk.
 
 ---
 
-## DEMO 3 — Skills + Agents scaffold the team  (~4–5 min)
+## Beat 1 — Wave 1 runs during the early slides  (Researcher ∥ Designer)
 
-**Goal:** show a whole team is just markdown + one command.
+**You are on slides 1–4 (problem → pillars → team → async/sync).** The team works while
+you talk.
 
-1. In the editor, open `orchestra-team/AGENTS.md` — walk the roster table and "the one
-   rule" (parallel vs. barrier). 20 seconds, no more.
-2. Open `.claude/agents/reviewer.md` — point at `tools: Read, Grep, Glob, Bash`
-   (no Write). "Read-only by design."
-3. Open `.claude/skills/spin-up-orchestra/SKILL.md` — "this is the automation: one
-   trigger stands up the team with the gates built in."
-4. Run it:
-   ```
-   /spin-up-orchestra
-   ```
-   Give it the goal when prompted (see DEMO 4).
+- **Narrate the parallelism:** glance at the two Wave-1 panes — "those two are running at
+  the *same time*: one's finalizing the value prop and copy, the other's locking the
+  visual system with ui-ux-pro-max."
+- **Catch the design landing:** if the Designer's palette/tokens appear while you're on
+  the pillars slide, flash it — "that aurora direction just got *decided*, live."
+- **The first barrier is the payoff of slide 4.** Watch for the orchestrator to say it's
+  **waiting for both** before Wave 2. Say out loud: "See — it just stopped. It won't
+  start Frontend until the design actually exists. That's a sync barrier."
 
-**Fallback:** the files themselves are the demo — just walk them.
+**Fallback:** if Wave 1 runs long, keep moving through slides — the team catches up in the
+background. If the Designer beat fails (rate limit, tool down), show
+`backup/figma-tokens.png` and say "the design system, pre-generated — same tokens."
 
 ---
 
-## DEMO 4 — tmux: watch the team work  (~5 min)  ⭐ the showpiece
+## Beat 2 — Cross the barrier → Wave 2  (Frontend ∥ Backend)
 
-**Goal:** make async-parallel and the sync-barrier *visible* at the same time.
+**You are on slides 5–6 (design tooling → tmux).** This is the richest stretch to narrate
+because the slide content *is* what the panes are doing.
 
-1. Build the control room:
-   ```
-   bash orchestra-team/scripts/tmux-orchestra.sh
-   ```
-   Four panes: ORCHESTRATOR (left, you drive), RESEARCHER / DEVELOPER / QA-REVIEWER
-   watchers (right).
-2. In the orchestrator pane, start Claude and give the goal — copy-paste:
+- **At the barrier:** "Both Wave 1 outputs are in — brief and design. The orchestrator
+  verifies, then fans out again." Point at the two new active panes.
+- **Slide 5 narrates the Frontend pane:** "Right now that agent is calling magic MCP for
+  the hero and form components, and reading the Figma tokens back so the colors match."
+- **Slide 6 (tmux) narrates both:** "Frontend and Backend, parallel lanes. Backend's
+  building `POST /api/waitlist` and the counter endpoint with SQLite and zod." Then:
+  "Watch for the **feature-complete barrier** — it won't run QA until the page renders
+  *and* the API responds."
 
-   > Rebuild the Orchestra dashboard from the Figma file. Fan out the independent
-   > work in parallel: Researcher gathers 3 reference agent-monitoring dashboards
-   > while the Developer scaffolds the layout from the design tokens — both in the
-   > background. Then insert a synchronous barrier: do NOT run QA until the Developer
-   > reports the feature complete, and do NOT run the Reviewer until QA returns PASS.
-   > Tell me out loud each time you fan out (async) and each time you wait (sync).
+**Fallback:** if magic MCP is slow/unavailable, the Frontend extends the pre-built base
+components (they already exist in the base app) — narrate that as "building on the base."
+If Wave 2 won't converge, this is the natural place to decide on the **golden backup**
+(see the switch procedure below) so the finale is guaranteed.
 
-3. **Narrate the panes** as it runs:
-   - "Researcher and Developer — different panes, running at the *same time*. Async."
-   - "QA pane is idle — it's *waiting*. The orchestrator hit a barrier."
-   - "QA just passed → now, and only now, the Reviewer wakes up. That's the sync gate."
-4. Close on the Reviewer's verdict. "Independent review, structurally guaranteed."
+---
 
-**Watcher panes:** to make them live instead of placeholders, point each at its
-task's output (e.g. follow a task's output or an agent log). If that's fiddly on
-stage, leave the seeded labels — the orchestrator's narration carries it.
+## Beat 3 — The quality gate: QA → Reviewer  (~3 min)
 
-**Fallback:** play `backup/tmux-run.mp4` and narrate over it. Just as effective.
+**You are on slide 7 (the gate).**
+
+1. **QA runs first.** Read its verdict off the QA pane: "it's driving the real signup flow
+   with Playwright — valid email, duplicate, invalid, empty."
+2. **The gate:** "Only on **PASS** does the orchestrator wake the Reviewer. If QA had
+   failed, it loops back to Wave 2 — nobody downstream works on broken code."
+3. **Reviewer is read-only** — point at its tools (no Write). "It checks email validation,
+   injection, error leakage. It *can't* fix-and-hide, because it can't edit."
+4. Close on the orchestrator's **"it's clean — it's live"** announcement.
+
+**Fallback:** if QA flaps on stage, say "QA's doing its job — catching exactly the kind of
+thing we don't want to ship," and switch to the golden backup for the finale. A visible QA
+failure *supports* the thesis; don't panic, frame it.
+
+---
+
+## Beat 4 — Finale: submit an email live  (~2 min)
+
+**You are on slide 10.** The payoff.
+
+1. Bring up the finished landing page. Scroll once so the room sees the motion the team
+   built minutes ago (aurora hero, scroll reveals, the live counter).
+2. **Type a real email into the waitlist form and submit, on stage.** It hits the SQLite
+   backend → returns **"You're #N on the list."**
+3. **Refresh** — the live counter ticks up. "That number is real — it just wrote to a
+   database an agent built, behind a gate another agent enforced, in a design a third
+   agent chose, while I was talking."
+4. Land the close (slide 10 speaker notes).
+
+**Fallback:** if the live app's form errors, switch to the **golden backup** app (already
+running on another port / window) and submit there — identical behavior. If all live
+tooling is down, show `backup/orchestra-final.png` and describe the flow; the narrative
+still closes.
+
+---
+
+## Switching to the golden backup (the master fallback)
+
+Do this calmly and *without apology* — the end state is identical, so the story is intact.
+
+1. The golden `orchestra-site` is already running (pre-flight) on a second port/window.
+2. Switch the browser to it. It has the waitlist feature complete and the counter live.
+3. Continue the runbook from wherever you were — Beat 4 works against it verbatim.
+4. One honest line if asked: "There's always a finished reference ready — that's how you
+   run a live demo responsibly. What you watched the team do *is* this result."
 
 ---
 
 ## Timing summary
 
-| Segment | Target |
-|---|---|
-| Intro + pillars + team + async/sync (slides 0–4) | ~13 min |
-| Demo 1 (design/taste) | ~4 min |
-| Demo 2 (MCP/Figma) | ~4 min |
-| Demo 3 (skills/agents) | ~5 min |
-| Demo 4 (tmux) | ~5 min |
-| Plugins + business + close (slides 9–11) | ~5 min |
-| **Total** | **~36 min** + Q&A |
+| Segment | Slides | Target | Team is doing |
+|---|---|---|---|
+| Kickoff (live) | 0 | ~2 min | start — Wave 1 fans out |
+| Problem + pillars + team + async/sync | 1–4 | ~15 min | Wave 1 → **barrier** → Wave 2 starts |
+| Design tooling + tmux | 5–6 | ~9 min | Wave 2 (Frontend ∥ Backend) → **barrier** |
+| Quality gate | 7 | ~3 min | QA → PASS → Reviewer |
+| Plugins + why-it-matters | 8–9 | ~6 min | Reviewer returns clean |
+| Finale (live email) | 10 | ~2 min | done — submit on stage |
+| **Total** | | **~37 min** + Q&A | |
+
+> Pacing reality: the slides set the clock, not the team. If the team is ahead, you're
+> narrating completed work (great). If behind, keep presenting — and switch to the golden
+> backup before the finale if Wave 2 hasn't converged by slide 9.
 
 ---
 
 ## Stage discipline
 
-- One sentence of *why* before every demo; don't narrate keystrokes.
-- If a tool hangs past ~20s: "Here's one I ran earlier" → backup → keep moving.
-- Keep the Orchestra mockup on a corner of the screen the whole time — it's the anchor.
-- It's fine to say the dashboard is a mockup being rebuilt live. The honesty is the demo.
+- One sentence of *why* before every beat; let the orchestrator narrate the keystrokes.
+- The orchestrator's async/sync announcements are the demo — **pause on each one and point
+  at the panes.** Don't talk over them.
+- Keep one eye on the tmux panes between slides; tie each slide to "what the team is doing
+  right now."
+- If a tool hangs past ~20s: name the fallback for that beat, use it, keep moving.
+- It's fine — good, even — to mention the golden backup exists. Running a live demo with a
+  net is the professional move, not a confession.

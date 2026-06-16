@@ -2,19 +2,21 @@
 #
 # tmux-orchestra.sh — multi-pane "control room" view for the Orchestra demo.
 #
-# Layout (one window, 5 panes):
+# Layout (one window, 6 panes — orchestrator + 5 role watchers, grouped by wave):
 #
 #   ┌─────────────────────────┬──────────────────┐
-#   │                         │   Researcher     │
+#   │                         │   Researcher  ┐  │  Wave 1
+#   │                         │   Designer    ┘  │  (async)
 #   │      ORCHESTRATOR       ├──────────────────┤
-#   │   (you drive this one)  │   Developer      │
+#   │   (you drive this one)  │   Frontend    ┐  │  Wave 2
+#   │                         │   Backend     ┘  │  (async)
 #   │                         ├──────────────────┤
-#   │                         │   QA / Reviewer  │
+#   │                         │   QA / Reviewer  │  gates
 #   └─────────────────────────┴──────────────────┘
 #
 # This is a PRESENTATION harness: the left pane is your real Claude Code session
 # (the orchestrator). The right panes are watcher panes — point them at each
-# agent's task output / log so the audience sees parallel work happening live.
+# agent's task output / log so the audience sees each wave's parallel work live.
 #
 # Usage:
 #   bash scripts/tmux-orchestra.sh           # build the layout and attach
@@ -41,33 +43,43 @@ tmux set -t "$SESSION" pane-border-status top
 tmux set -t "$SESSION" pane-border-format " #{pane_title} "
 tmux set -t "$SESSION" status-style "bg=#161619,fg=#ECECEE"
 tmux set -t "$SESSION" status-left "#[fg=#D97757,bold] ORCHESTRA #[default]"
-tmux set -t "$SESSION" status-right "#[fg=#9A9AA2]async ∥ sync — Sprint 14 "
+tmux set -t "$SESSION" status-right "#[fg=#9A9AA2]Wave 1 ∥ → barrier → Wave 2 ∥ → QA → Review "
 
 # --- Build the panes -------------------------------------------------------
 # Pane 0 (left, wide): the orchestrator — your real session.
 tmux select-pane -t "$SESSION:control.0" -T "ORCHESTRATOR  (drive here)"
 
-# Split off the right column (40% wide) -> pane 1.
-tmux split-window -h -t "$SESSION:control.0" -p 40
-tmux select-pane -t "$SESSION:control.1" -T "RESEARCHER"
+# Split off the right column (42% wide) -> pane 1 (Wave 1: Researcher).
+tmux split-window -h -t "$SESSION:control.0" -p 42
+tmux select-pane -t "$SESSION:control.1" -T "WAVE 1 · RESEARCHER"
 
-# Split the right column into three stacked watcher panes.
-tmux split-window -v -t "$SESSION:control.1" -p 66
-tmux select-pane -t "$SESSION:control.2" -T "DEVELOPER"
+# Stack the right column into five watcher panes, wave by wave.
+tmux split-window -v -t "$SESSION:control.1" -p 80
+tmux select-pane -t "$SESSION:control.2" -T "WAVE 1 · DESIGNER"
 
-tmux split-window -v -t "$SESSION:control.2" -p 50
-tmux select-pane -t "$SESSION:control.3" -T "QA  /  REVIEWER"
+tmux split-window -v -t "$SESSION:control.2" -p 75
+tmux select-pane -t "$SESSION:control.3" -T "WAVE 2 · FRONTEND"
+
+tmux split-window -v -t "$SESSION:control.3" -p 66
+tmux select-pane -t "$SESSION:control.4" -T "WAVE 2 · BACKEND"
+
+tmux split-window -v -t "$SESSION:control.4" -p 50
+tmux select-pane -t "$SESSION:control.5" -T "QA  /  REVIEWER"
 
 # --- Seed each watcher pane ------------------------------------------------
 # Replace these echoes with a real follow command once the team is running, e.g.:
 #   watch -n1 'claude task output <task-id>'        (poll a task's output)
-#   tail -f logs/developer.log                       (follow an agent log)
+#   tail -f logs/frontend.log                        (follow an agent log)
 tmux send-keys -t "$SESSION:control.1" \
-  "clear; printf '\\033[38;5;67m[RESEARCHER]\\033[0m watcher — point me at the research task output\\n'" C-m
+  "clear; printf '\\033[38;5;67m[RESEARCHER]\\033[0m  Wave 1 watcher — references + brief / acceptance criteria\\n'" C-m
 tmux send-keys -t "$SESSION:control.2" \
-  "clear; printf '\\033[38;5;108m[DEVELOPER]\\033[0m watcher — follow the build task / branch here\\n'" C-m
+  "clear; printf '\\033[38;5;176m[DESIGNER]\\033[0m  Wave 1 watcher — ui-ux-pro-max + Figma tokens / screenshot\\n'" C-m
 tmux send-keys -t "$SESSION:control.3" \
-  "clear; printf '\\033[38;5;179m[QA/REVIEWER]\\033[0m watcher — gate output (PASS/FAIL, review verdict)\\n'" C-m
+  "clear; printf '\\033[38;5;108m[FRONTEND]\\033[0m  Wave 2 watcher — landing page (magic MCP + Motion)\\n'" C-m
+tmux send-keys -t "$SESSION:control.4" \
+  "clear; printf '\\033[38;5;72m[BACKEND]\\033[0m  Wave 2 watcher — waitlist API + SQLite (zod, dedupe)\\n'" C-m
+tmux send-keys -t "$SESSION:control.5" \
+  "clear; printf '\\033[38;5;179m[QA/REVIEWER]\\033[0m  gate output (Playwright E2E PASS/FAIL, review verdict)\\n'" C-m
 
 # Land focus on the orchestrator pane and start Claude there.
 tmux select-pane -t "$SESSION:control.0"
