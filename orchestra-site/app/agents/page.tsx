@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function AgentsIndexPage() {
   return (
     <>
-      <section className="bg-paper px-4 pt-36 pb-16 sm:px-8 sm:pt-44 sm:pb-20">
+      <section className="bg-paper px-4 pt-28 pb-12 sm:px-8 sm:pt-32 sm:pb-14">
         <div className="mx-auto w-full max-w-[1200px]">
           <Reveal>
             <Eyebrow>Действующие лица</Eyebrow>

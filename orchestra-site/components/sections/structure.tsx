@@ -1,7 +1,8 @@
 import { PauseCircle, Minus } from "@phosphor-icons/react/dist/ssr";
 import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { SectionMarker } from "@/components/ui/section-marker";
 import { Reveal } from "@/components/motion/reveal";
+import { OrgChart } from "@/components/sections/org-chart";
 
 const STEPS = [
   {
@@ -45,7 +46,7 @@ export function StructureSection() {
     <Section id="how">
       <div className="max-w-3xl">
         <Reveal>
-          <Eyebrow>Дисциплина</Eyebrow>
+          <SectionMarker index="02" label="Дисциплина" />
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
@@ -63,10 +64,10 @@ export function StructureSection() {
       </div>
 
       {/* Flow as a vertical editorial timeline */}
-      <ol className="mt-16 border-t border-line">
+      <ol className="mt-8 border-t border-line">
         {STEPS.map((step, i) => (
           <Reveal as="li" key={step.n} delay={i * 0.05}>
-            <div className="grid gap-3 border-b border-line py-8 md:grid-cols-[auto_1fr] md:gap-12">
+            <div className="grid gap-2 border-b border-line py-5 md:grid-cols-[auto_1fr] md:gap-12">
               <span className="font-mono text-sm text-vermilion md:pt-1">
                 {step.n}
               </span>
@@ -85,8 +86,8 @@ export function StructureSection() {
 
       {/* Highlighted idle-during-QA block — the key idea (bespoke dark bezel) */}
       <Reveal delay={0.05}>
-        <div className="mt-14 rounded-[2rem] border border-vermilion/25 bg-vermilion-soft/35 p-1.5">
-          <div className="rounded-[1.5rem] bg-ink p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-12">
+        <div className="mt-10 rounded-[1.75rem] border border-vermilion/30 bg-vermilion-soft/35 p-2 shadow-[0_1px_2px_rgba(26,23,20,0.04),0_18px_40px_-28px_rgba(26,23,20,0.4)]">
+          <div className="rounded-[1.25rem] bg-ink p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-8">
             <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
               <PauseCircle
                 weight="light"
@@ -97,7 +98,7 @@ export function StructureSection() {
                 <h3 className="font-display text-2xl leading-tight font-bold text-paper sm:text-3xl">
                   Пока QA тестирует — разработчики простаивают. Намеренно.
                 </h3>
-                <p className="mt-5 max-w-3xl text-lg leading-relaxed text-paper/70">
+                <p className="mt-4 max-w-3xl text-lg leading-relaxed text-paper/70">
                   Это не лень и не ожидание — это правило. Если фронтенд или
                   бэкенд правят код во время теста, вердикт QA теряет смысл:
                   проверяли уже не то, что в репозитории. Поэтому во время гейта
@@ -113,16 +114,16 @@ export function StructureSection() {
       </Reveal>
 
       {/* Non-negotiables */}
-      <div className="mt-14 grid gap-10 lg:grid-cols-[0.6fr_1fr] lg:gap-20">
+      <div className="mt-10 grid gap-6 lg:grid-cols-[0.6fr_1fr] lg:gap-20">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-ink-muted">
             Правила дисциплины · non-negotiables
           </p>
         </Reveal>
-        <ul className="space-y-5">
+        <ul className="space-y-4">
           {RULES.map((rule, i) => (
             <Reveal as="li" key={rule} delay={i * 0.05}>
-              <div className="flex gap-4 border-b border-line pb-5">
+              <div className="flex gap-4 border-b border-line pb-4">
                 <Minus
                   weight="bold"
                   className="mt-1 h-4 w-4 shrink-0 text-vermilion"
@@ -134,6 +135,9 @@ export function StructureSection() {
           ))}
         </ul>
       </div>
+
+      {/* The signature moment — the interactive two-wave flow diagram */}
+      <OrgChart />
     </Section>
   );
 }

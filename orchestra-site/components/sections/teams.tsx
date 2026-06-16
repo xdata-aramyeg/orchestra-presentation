@@ -4,7 +4,7 @@ import {
   IdentificationCard,
 } from "@phosphor-icons/react/dist/ssr";
 import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { SectionMarker } from "@/components/ui/section-marker";
 import { BezelCard } from "@/components/ui/bezel-card";
 import { Reveal } from "@/components/motion/reveal";
 
@@ -30,10 +30,10 @@ const PILLARS = [
 export function TeamsSection() {
   return (
     <Section id="teams" alt>
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+      <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div>
           <Reveal>
-            <Eyebrow>Контекст</Eyebrow>
+            <SectionMarker index="01" label="Контекст" />
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
@@ -52,7 +52,7 @@ export function TeamsSection() {
         </Reveal>
       </div>
 
-      <div className="mt-16 grid gap-5 md:grid-cols-2">
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
         <Reveal>
           <BezelCard className="h-full" innerClassName="h-full">
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-ink-muted">
@@ -78,7 +78,7 @@ export function TeamsSection() {
         </Reveal>
       </div>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-3">
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
         {PILLARS.map((pillar, i) => (
           <Reveal key={pillar.title} delay={i * 0.08}>
             <BezelCard className="h-full" innerClassName="h-full">
@@ -99,7 +99,7 @@ export function TeamsSection() {
       </div>
 
       <Reveal delay={0.1}>
-        <p className="mt-10 max-w-2xl font-mono text-[13px] leading-relaxed text-ink-muted">
+        <p className="mt-8 max-w-2xl font-mono text-[13px] leading-relaxed text-ink-muted">
           Команды агентов — экспериментальная функция Claude Code, по умолчанию
           выключена. Нужна версия v2.1.32+ и флаг
           CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1.

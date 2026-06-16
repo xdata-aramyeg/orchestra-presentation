@@ -1,5 +1,5 @@
 import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { SectionMarker } from "@/components/ui/section-marker";
 import { BezelCard } from "@/components/ui/bezel-card";
 import { Reveal } from "@/components/motion/reveal";
 
@@ -43,7 +43,7 @@ function ToolGroup({
   items: readonly Item[];
 }) {
   return (
-    <BezelCard className="h-full" innerClassName="h-full sm:p-8">
+    <BezelCard className="h-full" innerClassName="h-full">
       <p className="font-mono text-xs uppercase tracking-[0.18em] text-vermilion">
         {label}
       </p>
@@ -67,7 +67,7 @@ export function ToolsSection() {
     <Section id="tools" alt>
       <div className="max-w-3xl">
         <Reveal>
-          <Eyebrow>Инструментарий</Eyebrow>
+          <SectionMarker index="03" label="Инструментарий" />
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
@@ -84,11 +84,11 @@ export function ToolsSection() {
         </Reveal>
       </div>
 
-      <div className="mt-16 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+      <div className="mt-8 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <ToolGroup label="Скиллы · skills" items={SKILLS} />
         </Reveal>
-        <div className="grid gap-5">
+        <div className="grid gap-4">
           <Reveal delay={0.06}>
             <ToolGroup label="MCP-серверы" items={MCPS} />
           </Reveal>

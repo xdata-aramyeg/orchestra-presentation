@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Quotes } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Quotes,
+  Warning,
+} from "@phosphor-icons/react/dist/ssr";
 import { Section } from "@/components/ui/section";
 import { BezelCard } from "@/components/ui/bezel-card";
-import { IslandLink } from "@/components/ui/island-link";
 import { Reveal } from "@/components/motion/reveal";
 import { AGENTS, getAgent } from "@/content/agents";
 
@@ -40,10 +44,14 @@ export default async function AgentPage({ params }: PageParams) {
   const agent = getAgent(slug);
   if (!agent) notFound();
 
+  const idx = AGENTS.findIndex((a) => a.slug === agent.slug);
+  const prev = AGENTS[(idx - 1 + AGENTS.length) % AGENTS.length];
+  const next = AGENTS[(idx + 1) % AGENTS.length];
+
   return (
     <article>
       {/* Header */}
-      <section className="bg-paper px-4 pt-32 pb-16 sm:px-8 sm:pt-40 sm:pb-20">
+      <section className="bg-paper px-4 pt-28 pb-12 sm:px-8 sm:pt-32 sm:pb-14">
         <div className="mx-auto w-full max-w-[1000px]">
           <Reveal>
             <Link
@@ -56,7 +64,7 @@ export default async function AgentPage({ params }: PageParams) {
           </Reveal>
 
           <Reveal delay={0.05}>
-            <p className="mt-12 font-mono text-sm text-vermilion">
+            <p className="mt-10 font-mono text-sm text-vermilion">
               {agent.index}
             </p>
           </Reveal>
@@ -74,13 +82,13 @@ export default async function AgentPage({ params }: PageParams) {
       </section>
 
       {/* Meta + character */}
-      <Section alt className="!py-20 sm:!py-24">
-        <div className="mx-auto grid max-w-[1000px] gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+      <Section alt>
+        <div className="mx-auto grid max-w-[1000px] gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <Reveal>
-            <BezelCard innerClassName="sm:p-8">
+            <BezelCard>
               <dl className="divide-y divide-line">
                 {META_ROWS.map((row) => (
-                  <div key={row.label} className="py-5 first:pt-0 last:pb-0">
+                  <div key={row.label} className="py-4 first:pt-0 last:pb-0">
                     <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-vermilion">
                       {row.label}
                     </dt>
@@ -109,18 +117,18 @@ export default async function AgentPage({ params }: PageParams) {
       </Section>
 
       {/* What it did */}
-      <Section className="!py-20 sm:!py-24">
+      <Section>
         <div className="mx-auto max-w-[1000px]">
-          <div className="grid gap-10 lg:grid-cols-[0.5fr_1fr] lg:gap-16">
+          <div className="grid gap-8 lg:grid-cols-[0.5fr_1fr] lg:gap-16">
             <Reveal>
               <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
                 Что сделал на этом сайте
               </h2>
             </Reveal>
-            <ul className="space-y-5">
+            <ul className="space-y-4">
               {agent.did.map((item, i) => (
                 <Reveal as="li" key={item} delay={i * 0.05}>
-                  <div className="flex gap-4 border-b border-line pb-5">
+                  <div className="flex gap-4 border-b border-line pb-4">
                     <span className="font-mono text-xs text-vermilion">
                       {String(i + 1).padStart(2, "0")}
                     </span>
@@ -133,32 +141,93 @@ export default async function AgentPage({ params }: PageParams) {
         </div>
       </Section>
 
-      {/* Quote */}
-      <Section alt className="!py-20 sm:!py-24">
+      {/* Quote + linked mistakes */}
+      <Section alt>
         <div className="mx-auto max-w-[1000px]">
           <Reveal>
-            <BezelCard accent innerClassName="sm:p-12">
+            <BezelCard accent>
               <Quotes
                 weight="fill"
                 className="h-8 w-8 text-vermilion"
                 aria-hidden="true"
               />
-              <blockquote className="mt-6 font-display text-2xl leading-snug font-medium text-ink sm:text-3xl">
+              <blockquote className="mt-5 font-display text-2xl leading-snug font-medium text-ink sm:text-3xl">
                 «{agent.quote}»
               </blockquote>
-              <p className="mt-8 font-mono text-[13px] text-ink-muted">
-                Связанные ошибки: {agent.relatedMistakes}
-              </p>
             </BezelCard>
+          </Reveal>
+
+          <Reveal delay={0.05}>
+            <Link
+              href="/#mistakes"
+              className="group mt-4 flex items-start gap-4 rounded-[1.25rem] border border-line bg-card p-6 transition-colors duration-200 hover:border-vermilion/50"
+            >
+              <Warning
+                weight="light"
+                className="mt-0.5 h-6 w-6 shrink-0 text-vermilion"
+                aria-hidden="true"
+              />
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
+                  Ошибки, к которым причастен
+                </p>
+                <p className="mt-2 leading-relaxed text-ink">
+                  {agent.relatedMistakes}
+                </p>
+                <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[13px] text-vermilion">
+                  Все ошибки
+                  <ArrowRight
+                    weight="light"
+                    className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </span>
+              </div>
+            </Link>
           </Reveal>
         </div>
       </Section>
 
-      <Section className="!pt-4 !pb-28">
-        <div className="mx-auto flex max-w-[1000px] justify-start">
-          <IslandLink href="/agents" variant="ghost">
-            Все агенты
-          </IslandLink>
+      {/* Prev / next agent — fills the foot with real navigation */}
+      <Section className="!py-12 sm:!py-16">
+        <div className="mx-auto grid max-w-[1000px] gap-4 sm:grid-cols-2">
+          <Link
+            href={`/agents/${prev.slug}`}
+            className="group flex items-center gap-4 rounded-[1.25rem] border border-line bg-card p-5 transition-colors duration-200 hover:border-vermilion/50"
+          >
+            <ArrowLeft
+              weight="light"
+              className="h-5 w-5 shrink-0 text-ink-muted transition-colors duration-200 group-hover:text-vermilion"
+              aria-hidden="true"
+            />
+            <span>
+              <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-ink-muted">
+                Предыдущий
+              </span>
+              <span className="mt-0.5 block font-display text-lg font-semibold text-ink">
+                {prev.handle}
+              </span>
+            </span>
+          </Link>
+
+          <Link
+            href={`/agents/${next.slug}`}
+            className="group flex items-center justify-end gap-4 rounded-[1.25rem] border border-line bg-card p-5 text-right transition-colors duration-200 hover:border-vermilion/50"
+          >
+            <span>
+              <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-ink-muted">
+                Следующий
+              </span>
+              <span className="mt-0.5 block font-display text-lg font-semibold text-ink">
+                {next.handle}
+              </span>
+            </span>
+            <ArrowRight
+              weight="light"
+              className="h-5 w-5 shrink-0 text-ink-muted transition-colors duration-200 group-hover:text-vermilion"
+              aria-hidden="true"
+            />
+          </Link>
         </div>
       </Section>
     </article>

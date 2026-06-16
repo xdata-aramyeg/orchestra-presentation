@@ -15,7 +15,7 @@ const FOOTER_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-paper-alt">
-      <div className="mx-auto w-full max-w-[1200px] px-4 py-20 sm:px-8 sm:py-24">
+      <div className="mx-auto w-full max-w-[1200px] px-4 py-14 sm:px-8 sm:py-16">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div className="max-w-xl">
             <p className="font-display text-2xl leading-tight text-ink sm:text-3xl">
@@ -39,7 +39,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
           <nav className="flex items-center gap-6">
             {FOOTER_LINKS.map((link) => (
               <Link

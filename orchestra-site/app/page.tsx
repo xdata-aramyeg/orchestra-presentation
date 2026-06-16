@@ -15,7 +15,11 @@ export default function HomePage() {
     <>
       <Hero />
       <TeamsSection />
+      {/* Structure (#how) ends with the interactive two-wave OrgChart. */}
       <StructureSection />
+      {/* SLOT (next round): "watch the agents talk" message thread + build
+          timeline — PM is compiling the real data. Place between structure and
+          tools so the story reads: structure → see it happen → tooling. */}
       <ToolsSection />
       <MistakesSection />
       <TeamTeaser />

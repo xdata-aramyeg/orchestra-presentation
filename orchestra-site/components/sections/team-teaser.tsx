@@ -1,5 +1,5 @@
 import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { SectionMarker } from "@/components/ui/section-marker";
 import { IslandLink } from "@/components/ui/island-link";
 import { Reveal } from "@/components/motion/reveal";
 import { AGENTS } from "@/content/agents";
@@ -8,10 +8,10 @@ import { AGENTS } from "@/content/agents";
 export function TeamTeaser() {
   return (
     <Section alt>
-      <div className="grid gap-14 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
+      <div className="grid gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
         <div>
           <Reveal>
-            <Eyebrow>Действующие лица</Eyebrow>
+            <SectionMarker index="05" label="Действующие лица" />
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">

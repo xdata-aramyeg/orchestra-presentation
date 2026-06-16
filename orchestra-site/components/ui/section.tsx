@@ -18,7 +18,7 @@ export function Section({ children, id, alt = false, className }: SectionProps) 
       id={id}
       className={`${alt ? "bg-paper-alt" : "bg-paper"} ${
         id ? "scroll-mt-24" : ""
-      } py-24 sm:py-32 lg:py-40 ${className ?? ""}`}
+      } py-12 sm:py-14 lg:py-16 ${className ?? ""}`}
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         {children}

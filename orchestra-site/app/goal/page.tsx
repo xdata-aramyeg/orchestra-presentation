@@ -55,7 +55,7 @@ export default function GoalPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-paper px-4 pt-36 pb-20 sm:px-8 sm:pt-44 sm:pb-24">
+      <section className="bg-paper px-4 pt-28 pb-14 sm:px-8 sm:pt-32 sm:pb-16">
         <div className="mx-auto w-full max-w-[1200px]">
           <Reveal>
             <Eyebrow>Северная звезда</Eyebrow>

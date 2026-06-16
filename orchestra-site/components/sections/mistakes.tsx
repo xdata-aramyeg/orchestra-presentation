@@ -1,5 +1,5 @@
 import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { SectionMarker } from "@/components/ui/section-marker";
 import { Reveal } from "@/components/motion/reveal";
 import { MistakeCard, type Mistake } from "./mistake-card";
 
@@ -54,7 +54,7 @@ export function MistakesSection() {
     <Section id="mistakes">
       <div className="max-w-3xl">
         <Reveal>
-          <Eyebrow>Честно</Eyebrow>
+          <SectionMarker index="04" label="Честно" />
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
@@ -71,7 +71,7 @@ export function MistakesSection() {
         </Reveal>
       </div>
 
-      <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {MISTAKES.map((mistake, i) => (
           <Reveal key={mistake.n} delay={(i % 3) * 0.08}>
             <MistakeCard mistake={mistake} />
@@ -79,11 +79,17 @@ export function MistakesSection() {
         ))}
       </div>
 
-      <Reveal delay={0.1}>
-        <p className="mt-14 max-w-2xl font-display text-xl leading-snug text-ink sm:text-2xl">
-          Эти шесть ошибок — не сноски. Это и есть правила, по которым команда
-          теперь живёт.
-        </p>
+      {/* Off-grid accent statement — the section's punctuation mark */}
+      <Reveal delay={0.05}>
+        <div className="mt-10 overflow-hidden rounded-[1.75rem] bg-vermilion px-7 py-10 sm:px-12 sm:py-12">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-paper/70">
+            Вывод
+          </p>
+          <p className="mt-5 max-w-4xl font-display text-2xl leading-[1.15] font-bold text-paper sm:text-4xl lg:text-5xl">
+            Эти шесть ошибок — не сноски. Это и есть правила, по которым команда
+            теперь живёт.
+          </p>
+        </div>
       </Reveal>
     </Section>
   );

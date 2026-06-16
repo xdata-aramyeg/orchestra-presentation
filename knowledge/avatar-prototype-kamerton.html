@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Камертон — avatar prototype (Orchestra)</title>
+<style>
+  /* ── On-palette tokens (from knowledge/design-brief.md) ───────────────── */
+  :root{
+    --paper:#FBFAF7;      /* warm off-white canvas        */
+    --paper-alt:#F3F0E9;  /* alt section / card tint      */
+    --ink:#1A1714;        /* ink text                     */
+    --ink-soft:#3B3A36;   /* secondary ink-tint           */
+    --vermilion:#C5482F;  /* single warm editorial accent */
+    --hair:rgba(26,23,20,.12);
+    --ring-curve:cubic-bezier(0.32,0.72,0,1);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Onest","Golos Text",system-ui,sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100dvh;padding:48px 24px;
+  }
+
+  /* faint film-grain, exactly as the brief specifies (opacity ~.03) */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Double-bezel card (outer shell + inner core) ─────────────────────── */
+  .shell{
+    background:var(--paper-alt);
+    border:1px solid var(--hair);
+    border-radius:2rem;
+    padding:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.6) inset;
+    max-width:420px;width:100%;
+  }
+  .core{
+    background:var(--paper);
+    border:1px solid var(--hair);
+    border-radius:1.4rem;
+    padding:40px 36px 30px;
+    box-shadow:0 1px 0 rgba(255,255,255,.7) inset;
+    text-align:center;
+  }
+
+  .eyebrow{
+    display:inline-block;
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--vermilion);
+    border:1px solid color-mix(in srgb,var(--vermilion) 35%,transparent);
+    border-radius:999px;padding:4px 12px;margin-bottom:26px;
+  }
+
+  /* ── Avatar stage ─────────────────────────────────────────────────────── */
+  .stage{width:200px;height:200px;margin:0 auto;display:block}
+
+  /* line-art defaults: stroke-driven, no fills on the figure */
+  .line{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+
+  /* the two prongs vibrate in opposition during the "ring" burst.
+     8s loop: ~88% calm idle (a barely-there breath), ~12% a damped strike. */
+  .prongL{transform-box:fill-box;transform-origin:50% 100%;animation:vibeL 8s var(--ring-curve) infinite}
+  .prongR{transform-box:fill-box;transform-origin:50% 100%;animation:vibeR 8s var(--ring-curve) infinite}
+
+  @keyframes vibeL{
+    0%,84%{transform:translateX(0)}
+    85%{transform:translateX(-2.4px)}
+    87%{transform:translateX(2px)}
+    89%{transform:translateX(-1.4px)}
+    91%{transform:translateX(1px)}
+    93%{transform:translateX(-.5px)}
+    95%,100%{transform:translateX(0)}
+  }
+  @keyframes vibeR{
+    0%,84%{transform:translateX(0)}
+    85%{transform:translateX(2.4px)}
+    87%{transform:translateX(-2px)}
+    89%{transform:translateX(1.4px)}
+    91%{transform:translateX(-1px)}
+    93%{transform:translateX(.5px)}
+    95%,100%{transform:translateX(0)}
+  }
+
+  /* concentric ripples in vermilion — emitted from the prong tips on the strike */
+  .ripple{
+    fill:none;stroke:var(--vermilion);stroke-width:2.5;
+    transform-box:fill-box;transform-origin:center;
+    opacity:0;
+  }
+  .r1{animation:ring 8s var(--ring-curve) infinite}
+  .r2{animation:ring 8s var(--ring-curve) infinite .55s}
+  .r3{animation:ring 8s var(--ring-curve) infinite 1.05s}
+  @keyframes ring{
+    0%,84%{opacity:0;transform:scale(.35)}
+    85%{opacity:.55;transform:scale(.4)}
+    100%{opacity:0;transform:scale(1.55)}
+  }
+
+  /* a tiny "in tune" check fades in just after the strike, then rests */
+  .check{
+    fill:none;stroke:var(--vermilion);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:26;stroke-dashoffset:26;
+    animation:check 8s var(--ring-curve) infinite;
+  }
+  @keyframes check{
+    0%,86%{stroke-dashoffset:26;opacity:0}
+    92%{stroke-dashoffset:0;opacity:1}
+    99%{opacity:1}
+    100%{stroke-dashoffset:0;opacity:0}
+  }
+
+  .name{font-size:22px;font-weight:600;margin:24px 0 2px}
+  .role{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.14em;
+        text-transform:uppercase;color:var(--ink-soft)}
+  .verdict{margin-top:18px;font-size:13.5px;line-height:1.6;color:var(--ink-soft);max-width:30ch;margin-left:auto;margin-right:auto}
+  .verdict b{color:var(--vermilion);font-weight:600}
+
+  /* ── Accessibility: prefers-reduced-motion → no motion, settled state ─── */
+  @media (prefers-reduced-motion:reduce){
+    .prongL,.prongR,.r1,.r2,.r3,.check{animation:none}
+    .prongL,.prongR{transform:none}
+    .ripple{opacity:0}
+    .r2{opacity:.3;transform:scale(1.1)}      /* one quiet static ring */
+    .check{stroke-dashoffset:0;opacity:1}     /* show the "in tune" check */
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="core">
+      <span class="eyebrow">QA · действие: строй</span>
+
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Камертон: камертон звенит, расходятся волны, появляется галочка «в строю»">
+        <!-- ripples, centred between the prong tips -->
+        <g transform="translate(100 56)">
+          <circle class="ripple r1" cx="0" cy="0" r="30"/>
+          <circle class="ripple r2" cx="0" cy="0" r="30"/>
+          <circle class="ripple r3" cx="0" cy="0" r="30"/>
+        </g>
+
+        <!-- tuning fork: two prongs + stem + base, pure line-art -->
+        <g>
+          <!-- left prong -->
+          <path class="line prongL" d="M78 50 L78 118"/>
+          <!-- right prong -->
+          <path class="line prongR" d="M122 50 L122 118"/>
+          <!-- U-bend joining the prongs -->
+          <path class="line" d="M78 118 Q78 140 100 140 Q122 140 122 118"/>
+          <!-- stem -->
+          <path class="line" d="M100 140 L100 168"/>
+          <!-- base foot -->
+          <path class="line" d="M88 168 L112 168"/>
+        </g>
+
+        <!-- "in tune" check, sits to the upper-right of the fork -->
+        <path class="check" d="M150 64 L158 74 L176 50"/>
+      </svg>
+
+      <div class="name">Камертон</div>
+      <div class="role">QA · Тестировщик</div>
+      <p class="verdict">Не играет музыку — проверяет, в строе ли она.
+         Бьёт по странице, ждёт, пока отзвенит, и выносит <b>вердикт</b>.</p>
+    </div>
+  </div>
+</body>
+</html>

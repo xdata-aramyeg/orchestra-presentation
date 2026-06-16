@@ -17,7 +17,7 @@ const STATS = [
  */
 export function Hero() {
   return (
-    <section className="bg-paper px-4 pt-36 pb-24 sm:px-8 sm:pt-44 sm:pb-32">
+    <section className="bg-paper px-4 pt-28 pb-16 sm:px-8 sm:pt-32 sm:pb-20">
       <div className="mx-auto w-full max-w-[1200px]">
         <Reveal>
           <Eyebrow>Презентация, которая документирует саму себя</Eyebrow>
@@ -55,7 +55,7 @@ export function Hero() {
         </Reveal>
 
         <Reveal delay={0.25}>
-          <dl className="mt-20 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-line pt-12 lg:grid-cols-4">
+          <dl className="mt-12 grid grid-cols-2 gap-x-8 gap-y-8 border-t border-line pt-8 lg:grid-cols-4">
             {STATS.map((stat) => (
               <div key={stat.label}>
                 <dt className="font-display text-4xl font-bold text-ink sm:text-5xl">

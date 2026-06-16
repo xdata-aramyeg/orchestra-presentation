@@ -22,14 +22,14 @@ export function BezelCard({
 }: BezelCardProps) {
   return (
     <div
-      className={`rounded-[2rem] border p-1.5 ${
+      className={`rounded-[1.75rem] border p-2 shadow-[0_1px_2px_rgba(26,23,20,0.04),0_18px_40px_-28px_rgba(26,23,20,0.35)] ${
         accent
-          ? "border-vermilion/25 bg-vermilion-soft/35"
-          : "border-line bg-shell"
+          ? "border-vermilion/30 bg-gradient-to-b from-vermilion-soft/55 to-vermilion-soft/25"
+          : "border-line bg-gradient-to-b from-shell to-paper-alt"
       } ${className ?? ""}`}
     >
       <div
-        className={`h-full rounded-[1.5rem] border border-line bg-card p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] sm:p-8 ${innerClassName ?? ""}`}
+        className={`h-full rounded-[1.25rem] border border-line bg-card p-5 shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(26,23,20,0.05),0_1px_1px_rgba(26,23,20,0.03)] sm:p-6 ${innerClassName ?? ""}`}
       >
         {children}
       </div>
