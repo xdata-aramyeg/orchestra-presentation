@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Orchestra design tokens — chosen via ui-ux-pro-max (Dark Mode OLED + Waitlist
+ * pattern), elevated to a vibrant aurora. Tokens are recorded once here and reused
+ * everywhere; never hardcode ad-hoc colors in components.
+ */
+@theme {
+  /* Surfaces (midnight) */
+  --color-base: #070a12;
+  --color-surface: #0e1320;
+  --color-elevated: #141a28;
+
+  /* Text */
+  --color-foreground: #f4f7ff;
+  --color-muted: #8a93a6;
+
+  /* Lines */
+  --color-edge: rgba(148, 163, 184, 0.14);
+  --color-edge-strong: rgba(148, 163, 184, 0.28);
+
+  /* Brand spectrum — the "orchestra" of voices resolving into one */
+  --color-violet: #8b5cf6;
+  --color-indigo: #6366f1;
+  --color-fuchsia: #e64bd9;
+  --color-cyan: #22d3ee;
+
+  /* Semantic */
+  --color-go: #34d399; /* success / live / "join" positive */
+  --color-warn: #fbbf24;
+  --color-danger: #fb7185;
+
+  /* Type */
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Motion easing tokens */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: var(--color-base);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tabular figures everywhere a number can change, to prevent layout shift */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* Brand gradient text */
+  .text-aurora {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-violet),
+      var(--color-fuchsia) 38%,
+      var(--color-cyan) 78%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-fuchsia) 40%, transparent);
+    color: var(--color-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Aurora blobs drifting in the hero background */
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, -4%, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Marquee for the logo / role strip */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.aurora-blob {
+  animation: aurora-drift 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+/*
+ * Global safety net: honor prefers-reduced-motion for every CSS animation/
+ * transition (marquee, aurora, etc.). Component-level Motion also checks
+ * useReducedMotion(), this catches the pure-CSS pieces.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-marquee,
+  .aurora-blob {
+    animation: none !important;
+  }
 }

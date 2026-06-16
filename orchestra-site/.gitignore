@@ -24,6 +24,11 @@
 .DS_Store
 *.pem
 
+# local sqlite waitlist db (created at runtime)
+/waitlist.db
+/waitlist.db-shm
+/waitlist.db-wal
+
 # debug
 npm-debug.log*
 yarn-debug.log*
