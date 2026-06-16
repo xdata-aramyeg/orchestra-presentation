@@ -85,6 +85,20 @@
   mix-blend-mode: multiply;
 }
 
+/*
+ * Safety net: if scripting is unavailable, Motion's whileInView never runs and
+ * scroll-revealed content would stay at its hidden initial state. Force the
+ * settled state for these elements so nothing is ever invisible. Scoped to
+ * [data-reveal] so it can't affect anything else.
+ */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

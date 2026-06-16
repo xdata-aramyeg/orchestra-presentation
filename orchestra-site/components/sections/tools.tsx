@@ -67,7 +67,7 @@ export function ToolsSection() {
     <Section id="tools" alt>
       <div className="max-w-3xl">
         <Reveal>
-          <SectionMarker index="03" label="Инструментарий" />
+          <SectionMarker index="04" label="Инструментарий" />
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">

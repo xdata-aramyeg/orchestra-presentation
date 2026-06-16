@@ -11,7 +11,7 @@ export function TeamTeaser() {
       <div className="grid gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
         <div>
           <Reveal>
-            <SectionMarker index="05" label="Действующие лица" />
+            <SectionMarker index="07" label="Действующие лица" />
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">

@@ -180,6 +180,45 @@ editorial bar before any of it touches `orchestra-site/`.
 
 ---
 
+## 6. Final per-agent SVG spec — for the React integration pass (Frontend)
+
+All six are **built and verified in a browser** in `knowledge/avatar-gallery.html` (console
+clean — only unrelated wallet-extension noise; favicon 404 fixed with `<link rel="icon"
+href="data:,">`). The gallery is the source of truth; this section is the porting contract.
+
+**Shared system (lock once in `tokens.ts` + `avatar-frame.tsx`):**
+- `viewBox="0 0 200 200"`, figure centred; emblem stage rendered at 40–48px (org-chart),
+  ~120–180px (character page).
+- Line-art: `fill:none; stroke:#1A1714; stroke-width:5; stroke-linecap:round;
+  stroke-linejoin:round`. "Faint" guide strokes = same ink at `opacity:.22`.
+- **Exactly one vermilion `#C5482F` element per emblem** — the thing that animates/accents.
+- Loops 7–9s, ~80%+ calm; `transform`/`opacity` only; custom curve
+  `cubic-bezier(0.32,0.72,0,1)`.
+- **Pivoted rotations** (baton, gear) need `transform-box:view-box; transform-origin:<x>px <y>px`
+  in user units. **Translations** (pen, frame, fork prongs, magnifier) use
+  `transform-box:fill-box` (origin-independent).
+- Every emblem `role="img"` + Russian `aria-label`; decorative ripples `aria-hidden`.
+- `prefers-reduced-motion:reduce` → `animation:none` + freeze to the **resolved "done" pose**
+  (poses listed below).
+
+| Agent (slug) | Geometry (key paths, 200-box) | Accent (vermilion) | Action keyframe | Reduced-motion pose |
+|---|---|---|---|---|
+| **Маэстро** (`maestro`) | baton `M62 152 L132 74` pivoting at `(62,152)`; 3 beat dots `cx 80/100/120, cy 170, r4` (ink outline + vermilion fill on top) | the 3 beat-dot fills | baton swings −6→6→−4→5→−3° across ~7–27% then rests at 7°; dot fills opacity 0→1 in 1-2-3 sequence | baton at 7°, all 3 dots lit |
+| **Либреттист** (`librettist`) | ruled line `M52 142 L150 142` (faint) + same path as accent underline; pen group: shaft `M58 132 L90 92`, nib `M58 132 L51 143 L62 128` | the underline (`stroke-dasharray:100`) | pen translates `(0,4)→(96,4)` while underline `dashoffset 100→0` (10–50%), then pen lifts to `(96,-7)`, holds, resets | underline drawn, pen lifted at `(96,-7)` |
+| **Сценограф** (`scenographer`) | 4 faint register corner-ticks; stage frame `rect x62 y62 w88 h88 rx6` | the frame | frame `translateX(-128→7→0)` opacity 0→1 (slide-in + overshoot + snap, 0–33%), holds, resets out | frame at `translateX(0)`, opacity 1 (in register) |
+| **Машинист** (`machinist`) | gear: `circle r30` + `circle r6` hub + 8 teeth (r30→r38 radial lines) at `(78,76)`; mini terminal `rect x116 y120 w64 h44 rx6` + 2 faint prompt lines | the caret `M150 140 L150 152` | gear detents 0→360° in 8×45° eased steps (9s); caret blinks via separate `1.1s steps(1)` opacity loop | gear at 0°, caret on |
+| **Камертон** (`diapason`) | fork: prongs `M78 50 L78 118` / `M122 50 L122 118`, U-bend + stem + foot; 3 ripple circles `r30` at `(100,56)`; check `M150 64 L158 74 L176 50` | ripples + the check | prongs vibrate ±2.4px damped (85–95%); ripples scale `.4→1.55` opacity-out (staggered .55s); check `dashoffset 26→0` | prongs still, one ring at `scale(1.1) opacity .3`, check drawn |
+| **Рецензент** (`reviewer`) | 3 faint text lines (y 70/96/122); magnifier: `circle cx64 cy62 r20` + handle `M78 76 L92 90`; check `M138 138 L148 150 L168 124` | the check (`dasharray:42`) | magnifier translates `(0,0)→(60,52)→(68,58)` diagonal sweep (0–74%); check `dashoffset 42→0` stamps at 73% | magnifier at `(68,58)`, check stamped |
+
+**Component API suggestion:**
+`<AgentAvatar slug="diapason" size="lg" play="auto" />` where `play` ∈ `auto` (loop) |
+`inView` (Motion `whileInView`, fire once on scroll-in — best for org-chart/teaser rows, stagger
+across the row) | `static` (force resolved pose). Read `useReducedMotion()` to force `static`.
+Co-locate each emblem's keyframes in its own file; no animation library required for the loops
+(Motion only for `whileInView` triggering + the reduced-motion hook).
+
+---
+
 ## TL;DR for the Lead
 
 - **Image generation is NOT available in-team** — no text-to-image tool; the imagegen/brandkit

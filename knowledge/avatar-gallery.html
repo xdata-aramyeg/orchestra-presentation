@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:," />  <!-- silences the favicon 404 the prototype logged -->
+<title>Orchestra — галерея аватаров (6 агентов)</title>
+<style>
+  /* ── On-palette tokens (knowledge/design-brief.md) ────────────────────── */
+  :root{
+    --paper:#FBFAF7; --paper-alt:#F3F0E9; --ink:#1A1714; --ink-soft:#3B3A36;
+    --vermilion:#C5482F; --hair:rgba(26,23,20,.12);
+    --curve:cubic-bezier(0.32,0.72,0,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"Onest","Golos Text",system-ui,sans-serif;
+    min-height:100dvh; padding:56px 24px 80px;
+  }
+  /* film-grain overlay (opacity ~.035) */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Page header ──────────────────────────────────────────────────────── */
+  .head{max-width:1100px;margin:0 auto 40px;text-align:center}
+  .head .eyebrow{
+    display:inline-block;font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--vermilion);
+    border:1px solid color-mix(in srgb,var(--vermilion) 35%,transparent);
+    border-radius:999px;padding:4px 12px;margin-bottom:18px;
+  }
+  .head h1{font-family:"Unbounded","Onest",sans-serif;font-weight:600;font-size:30px;margin:0 0 10px;letter-spacing:-.01em}
+  .head p{color:var(--ink-soft);font-size:14px;line-height:1.6;max-width:60ch;margin:0 auto}
+
+  /* ── Grid of double-bezel cards ───────────────────────────────────────── */
+  .grid{
+    max-width:1100px;margin:0 auto;display:grid;gap:18px;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  }
+  .shell{
+    background:var(--paper-alt);border:1px solid var(--hair);border-radius:2rem;padding:12px;
+    box-shadow:0 1px 0 rgba(255,255,255,.6) inset;
+  }
+  .core{
+    background:var(--paper);border:1px solid var(--hair);border-radius:1.5rem;
+    padding:26px 24px 22px;text-align:center;box-shadow:0 1px 0 rgba(255,255,255,.7) inset;
+  }
+  .tag{
+    display:inline-block;font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--vermilion);
+    border:1px solid color-mix(in srgb,var(--vermilion) 32%,transparent);
+    border-radius:999px;padding:3px 10px;margin-bottom:10px;
+  }
+  .stage{width:180px;height:180px;margin:2px auto 0;display:block}
+  .name{font-size:20px;font-weight:600;margin:14px 0 1px}
+  .role{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.13em;
+        text-transform:uppercase;color:var(--ink-soft)}
+  .action{margin-top:12px;font-size:12.5px;line-height:1.55;color:var(--ink-soft);max-width:30ch;margin-left:auto;margin-right:auto}
+  .action b{color:var(--vermilion);font-weight:600}
+
+  /* ── Shared figure language: ink line-art, single vermilion accent ────── */
+  .line{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  .faint{stroke:var(--ink);opacity:.22}
+  .acc{stroke:var(--vermilion)}              /* the one live accent per emblem */
+  .accfill{fill:var(--vermilion)}
+
+  /* ════════ МАЭСТРО — baton beats 1-2-3 ════════ */
+  .mae-baton{transform-box:view-box;transform-origin:62px 152px;animation:mae-baton 8s var(--curve) infinite}
+  @keyframes mae-baton{
+    0%,7%{transform:rotate(7deg)}
+    11%{transform:rotate(-6deg)} 15%{transform:rotate(6deg)}
+    19%{transform:rotate(-4deg)} 23%{transform:rotate(5deg)} 27%{transform:rotate(-3deg)}
+    34%,100%{transform:rotate(7deg)}
+  }
+  .mae-d1{animation:mae-d1 8s var(--curve) infinite}
+  .mae-d2{animation:mae-d2 8s var(--curve) infinite}
+  .mae-d3{animation:mae-d3 8s var(--curve) infinite}
+  @keyframes mae-d1{0%,8%{opacity:0}11%,15%{opacity:1}20%,100%{opacity:0}}
+  @keyframes mae-d2{0%,14%{opacity:0}17%,21%{opacity:1}26%,100%{opacity:0}}
+  @keyframes mae-d3{0%,20%{opacity:0}23%,27%{opacity:1}32%,100%{opacity:0}}
+
+  /* ════════ ЛИБРЕТТИСТ — pen draws an underline ════════ */
+  .lib-ul{stroke-dasharray:100;stroke-dashoffset:100;animation:lib-ul 7s var(--curve) infinite}
+  @keyframes lib-ul{0%,10%{stroke-dashoffset:100}50%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+  .lib-pen{transform-box:fill-box;animation:lib-pen 7s var(--curve) infinite}
+  @keyframes lib-pen{
+    0%,10%{transform:translate(0,4px)}
+    50%{transform:translate(96px,4px)}
+    60%,90%{transform:translate(96px,-7px)}
+    100%{transform:translate(0,4px)}
+  }
+
+  /* ════════ СЦЕНОГРАФ — stage-frame snaps into register ════════ */
+  .scn-frame{transform-box:fill-box;animation:scn-frame 7s var(--curve) infinite}
+  @keyframes scn-frame{
+    0%{transform:translateX(-128px);opacity:0}
+    9%{opacity:1}
+    26%{transform:translateX(7px)}      /* slight overshoot */
+    33%{transform:translateX(0)}        /* snap to register */
+    88%{transform:translateX(0);opacity:1}
+    100%{transform:translateX(-128px);opacity:0}
+  }
+
+  /* ════════ МАШИНИСТ — gear turns + terminal caret blinks ════════ */
+  /* detented turn: holds, then an eased quarter-step to the next stop; 360°=0 loops seamlessly */
+  .mac-gear{transform-box:view-box;transform-origin:78px 76px;animation:mac-gear 9s var(--curve) infinite}
+  @keyframes mac-gear{
+    0%,9%{transform:rotate(0deg)}      13%,22%{transform:rotate(45deg)}
+    26%,35%{transform:rotate(90deg)}   39%,48%{transform:rotate(135deg)}
+    52%,61%{transform:rotate(180deg)}  65%,74%{transform:rotate(225deg)}
+    78%,87%{transform:rotate(270deg)}  91%,96%{transform:rotate(315deg)}
+    100%{transform:rotate(360deg)}
+  }
+  .mac-caret{animation:mac-caret 1.1s steps(1,end) infinite}
+  @keyframes mac-caret{0%,52%{opacity:1}53%,100%{opacity:0}}
+
+  /* ════════ КАМЕРТОН — fork struck → ripple + "in tune" ✓ ════════ */
+  .kam-pL{transform-box:fill-box;transform-origin:50% 100%;animation:kam-vL 8s var(--curve) infinite}
+  .kam-pR{transform-box:fill-box;transform-origin:50% 100%;animation:kam-vR 8s var(--curve) infinite}
+  @keyframes kam-vL{0%,84%{transform:translateX(0)}85%{transform:translateX(-2.4px)}87%{transform:translateX(2px)}89%{transform:translateX(-1.4px)}91%{transform:translateX(1px)}93%{transform:translateX(-.5px)}95%,100%{transform:translateX(0)}}
+  @keyframes kam-vR{0%,84%{transform:translateX(0)}85%{transform:translateX(2.4px)}87%{transform:translateX(-2px)}89%{transform:translateX(1.4px)}91%{transform:translateX(-1px)}93%{transform:translateX(.5px)}95%,100%{transform:translateX(0)}}
+  .kam-ripple{fill:none;stroke:var(--vermilion);stroke-width:2.5;transform-box:fill-box;transform-origin:center;opacity:0}
+  .kam-r1{animation:kam-ring 8s var(--curve) infinite}
+  .kam-r2{animation:kam-ring 8s var(--curve) infinite .55s}
+  .kam-r3{animation:kam-ring 8s var(--curve) infinite 1.05s}
+  @keyframes kam-ring{0%,84%{opacity:0;transform:scale(.35)}85%{opacity:.55;transform:scale(.4)}100%{opacity:0;transform:scale(1.55)}}
+  .kam-check{stroke-dasharray:26;stroke-dashoffset:26;animation:kam-check 8s var(--curve) infinite}
+  @keyframes kam-check{0%,86%{stroke-dashoffset:26;opacity:0}92%{stroke-dashoffset:0;opacity:1}99%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+
+  /* ════════ РЕЦЕНЗЕНТ — magnifier sweeps then stamps a ✓ ════════ */
+  .rev-glass{transform-box:fill-box;animation:rev-glass 8s var(--curve) infinite}
+  @keyframes rev-glass{
+    0%,6%{transform:translate(0,0)}
+    60%{transform:translate(60px,52px)}
+    74%,90%{transform:translate(68px,58px)}
+    100%{transform:translate(0,0)}
+  }
+  .rev-check{stroke-dasharray:42;stroke-dashoffset:42;animation:rev-check 8s var(--curve) infinite}
+  @keyframes rev-check{0%,64%{stroke-dashoffset:42;opacity:0}73%{stroke-dashoffset:0;opacity:1}92%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+
+  /* ── prefers-reduced-motion → freeze every emblem to its resolved pose ── */
+  @media (prefers-reduced-motion:reduce){
+    .mae-baton,.lib-ul,.lib-pen,.scn-frame,.mac-gear,.mac-caret,
+    .kam-pL,.kam-pR,.kam-r1,.kam-r2,.kam-r3,.kam-check,.rev-glass,.rev-check{animation:none}
+    /* Маэстро: baton at rest, all three beats lit (1-2-3 shown) */
+    .mae-baton{transform:rotate(7deg)} .mae-d1,.mae-d2,.mae-d3{opacity:1}
+    /* Либреттист: underline drawn, pen lifted */
+    .lib-ul{stroke-dashoffset:0} .lib-pen{transform:translate(96px,-7px)}
+    /* Сценограф: frame in register */
+    .scn-frame{transform:translateX(0);opacity:1}
+    /* Машинист: gear settled, caret on */
+    .mac-gear{transform:rotate(0)} .mac-caret{opacity:1}
+    /* Камертон: one quiet ring + ✓ */
+    .kam-pL,.kam-pR{transform:none} .kam-ripple{opacity:0} .kam-r2{opacity:.3;transform:scale(1.1)}
+    .kam-check{stroke-dashoffset:0;opacity:1}
+    /* Рецензент: magnifier at end of sweep, ✓ stamped */
+    .rev-glass{transform:translate(68px,58px)} .rev-check{stroke-dashoffset:0;opacity:1}
+  }
+</style>
+</head>
+<body>
+  <header class="head">
+    <span class="eyebrow">Orchestra · действующие лица</span>
+    <h1>Шесть аватаров. Каждый делает свою работу.</h1>
+    <p>Line-art аватары на тёплой бумаге: ink-штрих как у всего сайта, единственный
+       акцент — vermilion, который и «играет». Движение только transform/opacity,
+       тихое и зациклённое; при <code>prefers-reduced-motion</code> каждый замирает
+       в финальной позе. Это автономная галерея для оценки — не часть приложения.</p>
+  </header>
+
+  <main class="grid">
+
+    <!-- ════ МАЭСТРО ════ -->
+    <div class="shell"><div class="core">
+      <span class="tag">Lead · такт</span>
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Маэстро: дирижёрская палочка отбивает такт раз-два-три">
+        <!-- baton, pivoting from the hand -->
+        <g class="mae-baton"><path class="line" d="M62 152 L132 74"/></g>
+        <!-- 3 beat dots: ink outline + vermilion fill that lights in sequence -->
+        <circle class="line faint" cx="80"  cy="170" r="4"/>
+        <circle class="line faint" cx="100" cy="170" r="4"/>
+        <circle class="line faint" cx="120" cy="170" r="4"/>
+        <circle class="accfill mae-d1" cx="80"  cy="170" r="4"/>
+        <circle class="accfill mae-d2" cx="100" cy="170" r="4"/>
+        <circle class="accfill mae-d3" cx="120" cy="170" r="4"/>
+      </svg>
+      <div class="name">Маэстро</div>
+      <div class="role">Lead · Оркестратор</div>
+      <p class="action">Дирижирует, но не играет. Палочка <b>отбивает такт</b> — раз-два-три.</p>
+    </div></div>
+
+    <!-- ════ ЛИБРЕТТИСТ ════ -->
+    <div class="shell"><div class="core">
+      <span class="tag">PM · партитура</span>
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Либреттист: перо проводит подчёркивающую линию">
+        <!-- ruled line (faint) + vermilion underline that draws -->
+        <path class="line faint" d="M52 142 L150 142"/>
+        <path class="line acc lib-ul" d="M52 142 L150 142"/>
+        <!-- fountain pen, nib at the writing point -->
+        <g class="lib-pen">
+          <path class="line" d="M58 132 L90 92"/>
+          <path class="line" d="M58 132 L51 143 L62 128"/>
+        </g>
+      </svg>
+      <div class="name">Либреттист</div>
+      <div class="role">PM · Аналитик</div>
+      <p class="action">Пишет, что произойдёт на сцене. Перо <b>проводит строку</b>.</p>
+    </div></div>
+
+    <!-- ════ СЦЕНОГРАФ ════ -->
+    <div class="shell"><div class="core">
+      <span class="tag">Frontend · сцена</span>
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Сценограф: рамка сцены въезжает и встаёт в регистр">
+        <!-- register corner ticks (where the frame must land) -->
+        <path class="line faint" d="M54 66 L54 54 L66 54"/>
+        <path class="line faint" d="M146 54 L158 54 L158 66"/>
+        <path class="line faint" d="M158 146 L158 158 L146 158"/>
+        <path class="line faint" d="M66 158 L54 158 L54 146"/>
+        <!-- the stage frame that slides in and snaps -->
+        <rect class="line acc scn-frame" x="62" y="62" width="88" height="88" rx="6"/>
+      </svg>
+      <div class="name">Сценограф</div>
+      <div class="role">Frontend · Постановщик</div>
+      <p class="action">Строит то, что видит зритель. Рамка <b>встаёт в регистр</b>.</p>
+    </div></div>
+
+    <!-- ════ МАШИНИСТ ════ -->
+    <div class="shell"><div class="core">
+      <span class="tag">Backend · машинерия</span>
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Машинист: шестерёнка проворачивается, в терминале мигает каретка">
+        <!-- gear: ring + hub + 8 teeth, turning in detents -->
+        <g class="mac-gear">
+          <circle class="line" cx="78" cy="76" r="30"/>
+          <circle class="line" cx="78" cy="76" r="6"/>
+          <path class="line" d="M108 76 L116 76"/>
+          <path class="line" d="M99.2 97.2 L104.9 102.9"/>
+          <path class="line" d="M78 106 L78 114"/>
+          <path class="line" d="M56.8 97.2 L51.1 102.9"/>
+          <path class="line" d="M48 76 L40 76"/>
+          <path class="line" d="M56.8 54.8 L51.1 49.1"/>
+          <path class="line" d="M78 46 L78 38"/>
+          <path class="line" d="M99.2 54.8 L104.9 49.1"/>
+        </g>
+        <!-- mini terminal with a blinking vermilion caret -->
+        <rect class="line" x="116" y="120" width="64" height="44" rx="6"/>
+        <path class="line faint" d="M126 134 L150 134"/>
+        <path class="line faint" d="M126 146 L142 146"/>
+        <path class="line acc mac-caret" d="M150 140 L150 152"/>
+      </svg>
+      <div class="name">Машинист</div>
+      <div class="role">Backend · Машинерия</div>
+      <p class="action">Двигает то, что скрыто. Шестерёнка <b>проворачивается</b>, мигает каретка.</p>
+    </div></div>
+
+    <!-- ════ КАМЕРТОН ════ -->
+    <div class="shell"><div class="core">
+      <span class="tag">QA · строй</span>
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Камертон: камертон звенит, расходятся волны, появляется галочка в строю">
+        <g transform="translate(100 56)">
+          <circle class="kam-ripple kam-r1" cx="0" cy="0" r="30"/>
+          <circle class="kam-ripple kam-r2" cx="0" cy="0" r="30"/>
+          <circle class="kam-ripple kam-r3" cx="0" cy="0" r="30"/>
+        </g>
+        <path class="line kam-pL" d="M78 50 L78 118"/>
+        <path class="line kam-pR" d="M122 50 L122 118"/>
+        <path class="line" d="M78 118 Q78 140 100 140 Q122 140 122 118"/>
+        <path class="line" d="M100 140 L100 168"/>
+        <path class="line" d="M88 168 L112 168"/>
+        <path class="line acc kam-check" d="M150 64 L158 74 L176 50"/>
+      </svg>
+      <div class="name">Камертон</div>
+      <div class="role">QA · Тестировщик</div>
+      <p class="action">Проверяет, в строе ли. По удару — <b>волна</b> и галочка «в строю».</p>
+    </div></div>
+
+    <!-- ════ РЕЦЕНЗЕНТ ════ -->
+    <div class="shell"><div class="core">
+      <span class="tag">Reviewer · читка</span>
+      <svg class="stage" viewBox="0 0 200 200" role="img"
+           aria-label="Рецензент: лупа проходит по строкам, в конце ставится галочка">
+        <!-- lines of text being read (faint) -->
+        <path class="line faint" d="M52 70 L140 70"/>
+        <path class="line faint" d="M52 96 L132 96"/>
+        <path class="line faint" d="M52 122 L138 122"/>
+        <!-- magnifier sweeping across -->
+        <g class="rev-glass">
+          <circle class="line" cx="64" cy="62" r="20"/>
+          <path class="line" d="M78 76 L92 90"/>
+        </g>
+        <!-- vermilion ✓ stamped at the end -->
+        <path class="line acc rev-check" d="M138 138 L148 150 L168 124"/>
+      </svg>
+      <div class="name">Рецензент</div>
+      <div class="role">Reviewer · Критик</div>
+      <p class="action">Читает финальную партитуру. Лупа <b>проходит строки</b> и ставит ✓.</p>
+    </div></div>
+
+  </main>
+</body>
+</html>
