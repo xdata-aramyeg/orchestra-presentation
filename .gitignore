@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+**/node_modules/
+# next.js
+.next/
+out/
+# production
+build/
+dist/
+# sqlite / local data
+*.db
+*.db-journal
+*.sqlite
+# env
+.env
+.env*.local
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+# backups (kept locally, not committed by default)
+backup/
