@@ -27,6 +27,31 @@ presentation. It is NOT a fake product; it is an honest, well-told case study of
    the Lead hand-coded (bad), QA scope was ambiguous, the first design "looked so bad," the
    full reset, the Figma rate-limit. Mistakes → lessons. This honesty is the best part.
 
+## The mandate — three dials (the loop's real purpose)
+
+This is a **presentation to the team/company**. Every iteration must push ALL THREE:
+
+0. **Visually excellent (top priority, never "done")** — the craft bar keeps rising:
+   the light-editorial system, typography, the avatars, motion, the film. Each loop
+   should make it look *better*, not just add features. Hold the design-brief bar
+   (warm paper, Cyrillic premium type, double-bezel, restrained premium motion); never
+   regress it; keep reaching for the $150k-agency / award feel.
+1. **Exciting** — it must grab and hold attention. Memorable, alive, a little playful;
+   one signature moment per section (the message thread, the org chart, the avatars,
+   the film). Not a wall of text; a thing people *want* to scroll.
+2. **Educational about Claude Code's intricate usage** — the audience should leave
+   actually knowing *how* to do this: the real mechanics, named and accurate —
+   **skills** (and how we used ui-ux-pro-max, frontend/backend-patterns, the taste
+   skills, remotion, svg-animation…), **MCP** (Figma, 21st magic, Chrome/computer-use,
+   Playwright — what each did), **plugins**, and **agent teams** (the lead+teammates
+   model, subagent-definition roles, `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`,
+   SendMessage/mailbox, the shared task list, barriers, idle-during-QA, hooks). Teach
+   through the story, with honest "под капотом" detail — enough that a viewer could
+   reproduce it.
+
+The loop continuously raises both dials. Research only serves this; the output of each
+loop iteration is a concrete improvement to excitement and/or teaching value — not a memo.
+
 ## Non-negotiables
 
 - **Language: Russian.** All visitor-facing copy is in Russian. (Code, comments, docs stay English.)

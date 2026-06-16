@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
 import { BezelCard } from "@/components/ui/bezel-card";
 import { Reveal } from "@/components/motion/reveal";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 
 const PILLARS = [
   {
@@ -105,6 +106,8 @@ export function TeamsSection() {
           CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1.
         </p>
       </Reveal>
+
+      <UnderHoodCallout id="teams" />
     </Section>
   );
 }

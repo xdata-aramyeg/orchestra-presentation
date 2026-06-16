@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
 import { Reveal } from "@/components/motion/reveal";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 import { MistakeCard, type Mistake } from "./mistake-card";
 
 const MISTAKES: readonly Mistake[] = [
@@ -91,6 +92,8 @@ export function MistakesSection() {
           </p>
         </div>
       </Reveal>
+
+      <UnderHoodCallout id="mistakes" />
     </Section>
   );
 }

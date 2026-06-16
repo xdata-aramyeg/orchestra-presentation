@@ -3,6 +3,7 @@ import { SectionMarker } from "@/components/ui/section-marker";
 import { IslandLink } from "@/components/ui/island-link";
 import { Reveal } from "@/components/motion/reveal";
 import { AgentAvatar, type AvatarSlug } from "@/components/avatars";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 import { AGENTS } from "@/content/agents";
 
 /** §1.6 — the team teaser at the bottom of the home page. */
@@ -12,11 +13,11 @@ export function TeamTeaser() {
       <div className="grid gap-10 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
         <div>
           <Reveal>
-            <SectionMarker index="07" label="Действующие лица" />
+            <SectionMarker index="08" label="Действующие лица" />
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mt-6 font-display text-3xl leading-[1.1] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-              Шесть агентов. Шесть ролей. Ни один не делал чужую работу.
+              Семь агентов. Семь ролей. Ни один не делал чужую работу.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -25,7 +26,8 @@ export function TeamTeaser() {
               выходит на сцену. Сценограф строит то, что видит зритель; Машинист
               — то, что скрыто за кулисами. Камертон проверяет, держит ли всё
               строй. Рецензент читает финальную партитуру и ставит подпись — но
-              не переписывает ни ноты.
+              не переписывает ни ноты. А Хроникёр приходит последним и наводит
+              камеру на то, что уже случилось.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
@@ -61,6 +63,8 @@ export function TeamTeaser() {
           </ul>
         </Reveal>
       </div>
+
+      <UnderHoodCallout id="team" />
     </Section>
   );
 }

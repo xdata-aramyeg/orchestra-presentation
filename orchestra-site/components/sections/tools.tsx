@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
 import { BezelCard } from "@/components/ui/bezel-card";
 import { Reveal } from "@/components/motion/reveal";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 
 type Item = { name: string; body: string };
 
@@ -97,6 +98,8 @@ export function ToolsSection() {
           </Reveal>
         </div>
       </div>
+
+      <UnderHoodCallout id="tools" />
     </Section>
   );
 }

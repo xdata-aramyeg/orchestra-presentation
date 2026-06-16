@@ -4,6 +4,7 @@ const LINKS = [
   { href: "/agents", label: "Команда" },
   { href: "/goal", label: "Цель" },
   { href: "/#how", label: "Как это работает" },
+  { href: "/#under-the-hood", label: "Под капотом" },
 ] as const;
 
 /**

@@ -8,7 +8,7 @@ import { AGENTS } from "@/content/agents";
 export const metadata: Metadata = {
   title: "Команда — Orchestra",
   description:
-    "Команда из шести агентов Claude Code на Opus. Каждый знает свою партию и не лезет в чужую.",
+    "Команда из семи агентов Claude Code на Opus. Каждый знает свою партию и не лезет в чужую.",
 };
 
 export default function AgentsIndexPage() {
@@ -21,7 +21,7 @@ export default function AgentsIndexPage() {
           </Reveal>
           <Reveal delay={0.05}>
             <h1 className="mt-7 max-w-[18ch] font-display text-[2.4rem] leading-[1.06] font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl">
-              Команда из шести агентов. Все — на Opus.
+              Команда из семи агентов. Все — на Opus.
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
@@ -48,7 +48,7 @@ export default function AgentsIndexPage() {
           <p className="mt-12 font-mono text-[13px] leading-relaxed text-ink-muted">
             slug маршрутов: /agents/maestro · /agents/librettist ·
             /agents/scenographer · /agents/machinist · /agents/diapason ·
-            /agents/reviewer
+            /agents/reviewer · /agents/chronicler
           </p>
         </Reveal>
       </Section>

@@ -2,9 +2,10 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { IslandLink } from "@/components/ui/island-link";
 import { Reveal } from "@/components/motion/reveal";
 import { CountUp } from "@/components/motion/count-up";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 
 const STATS = [
-  { value: 6, label: "агентов на Opus" },
+  { value: 7, label: "агентов на Opus" },
   { value: 2, label: "волны со строгими барьерами" },
   { value: 1, label: "правило держит всё — idle-during-QA" },
   { value: 6, label: "честных ошибки внутри" },
@@ -32,10 +33,11 @@ export function Hero() {
 
         <Reveal delay={0.1}>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl">
-            Шесть агентов Claude Code на Opus: оркестратор, аналитик, фронтенд,
-            бэкенд, тестировщик и ревьюер. Они работали параллельно, передавали
-            работу через барьеры качества — и не дали ни одному агенту проверять
-            собственную работу. Этот сайт — их отчёт о самих себе.
+            Семь агентов Claude Code на Opus: оркестратор, аналитик, фронтенд,
+            бэкенд, тестировщик, ревьюер и хроникёр. Они работали параллельно,
+            передавали работу через барьеры качества — и не дали ни одному
+            агенту проверять собственную работу. Этот сайт — их отчёт о самих
+            себе.
           </p>
         </Reveal>
 
@@ -68,6 +70,8 @@ export function Hero() {
             ))}
           </dl>
         </Reveal>
+
+        <UnderHoodCallout id="hero" />
       </div>
     </section>
   );

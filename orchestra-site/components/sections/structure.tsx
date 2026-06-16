@@ -3,6 +3,7 @@ import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
 import { Reveal } from "@/components/motion/reveal";
 import { OrgChart } from "@/components/sections/org-chart";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 
 const STEPS = [
   {
@@ -138,6 +139,8 @@ export function StructureSection() {
 
       {/* The signature moment — the interactive two-wave flow diagram */}
       <OrgChart />
+
+      <UnderHoodCallout id="how" />
     </Section>
   );
 }

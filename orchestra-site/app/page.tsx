@@ -5,6 +5,7 @@ import { MessageThread } from "@/components/sections/message-thread";
 import { ToolsSection } from "@/components/sections/tools";
 import { Timeline } from "@/components/sections/timeline";
 import { MistakesSection } from "@/components/sections/mistakes";
+import { UnderTheHood } from "@/components/sections/under-the-hood";
 import { TeamTeaser } from "@/components/sections/team-teaser";
 
 /**
@@ -26,6 +27,8 @@ export default function HomePage() {
       {/* "How we got here" — sits right before the honest mistakes section. */}
       <Timeline />
       <MistakesSection />
+      {/* The educational dial: how it works + how to repeat it. */}
+      <UnderTheHood />
       <TeamTeaser />
     </>
   );

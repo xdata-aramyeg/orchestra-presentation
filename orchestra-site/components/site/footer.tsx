@@ -20,7 +20,7 @@ export function SiteFooter() {
           <div className="max-w-xl">
             <p className="font-display text-2xl leading-tight text-ink sm:text-3xl">
               Эту страницу спланировала, построила, протестировала и проверила
-              команда из шести агентов Claude Code — работая параллельно.
+              команда из семи агентов Claude Code — работая параллельно.
             </p>
             <p className="mt-5 text-ink-soft">
               Сделано на Opus · Next.js · с настоящими ошибками по пути.

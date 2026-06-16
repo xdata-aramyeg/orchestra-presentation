@@ -5,6 +5,7 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 import { ArrowClockwise } from "@phosphor-icons/react";
 import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
+import { UnderHoodCallout } from "@/components/under-the-hood/callout";
 import { THREAD, type Bubble } from "@/content/thread";
 
 const EASE = [0.32, 0.72, 0, 1] as const;
@@ -133,6 +134,8 @@ export function MessageThread() {
           ))}
         </ol>
       )}
+
+      <UnderHoodCallout id="thread" />
     </Section>
   );
 }
