@@ -15,6 +15,7 @@
 | **Backend dev** | `backend` | Builds the API + database + validation (skill: `backend-patterns`) | touches UI component files |
 | **QA** | `qa` | **Tests only** — drives a real browser (Chrome MCP + computer use), reports PASS/FAIL; **writes test cases while idle** | edits app/feature code |
 | **Reviewer** | `reviewer` | Reads & reviews code (skills: `security-review`, `review`) | edits any code |
+| **Хроникёр (Motion/Видео)** | `chronicler` | Builds the self-referential **Remotion film** (+ GSAP, Three.js / react-three-fiber, Lottie) of how the team built the site; **«оживляет историю команды»**; continuously improved | touches non-video app/feature files |
 
 **All teammates run on Opus** (`model: opus` in every role file). The Lead is the main session.
 
