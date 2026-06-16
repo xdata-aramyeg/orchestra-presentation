@@ -3,8 +3,11 @@ import Link from "next/link";
 const LINKS = [
   { href: "/agents", label: "Команда" },
   { href: "/goal", label: "Цель" },
-  { href: "/#how", label: "Как это работает" },
-  { href: "/#under-the-hood", label: "Под капотом" },
+  { href: "/film", label: "Фильм" },
+  // In-page anchors: hidden on small screens so the pill never overflows
+  // (they're still reachable by scrolling); shown from md up.
+  { href: "/#how", label: "Как это работает", anchor: true },
+  { href: "/#under-the-hood", label: "Под капотом", anchor: true },
 ] as const;
 
 /**
@@ -29,7 +32,11 @@ export function SiteNav() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-full px-3 py-2 text-[13px] text-ink-soft transition-colors duration-200 hover:bg-shell hover:text-ink sm:text-sm"
+              className={`rounded-full px-3 py-2 text-[13px] text-ink-soft transition-colors duration-200 hover:bg-shell hover:text-ink sm:text-sm ${
+                "anchor" in link && link.anchor
+                  ? "hidden md:inline-flex"
+                  : "inline-flex"
+              }`}
             >
               {link.label}
             </Link>

@@ -2,6 +2,7 @@ import { Hero } from "@/components/sections/hero";
 import { TeamsSection } from "@/components/sections/teams";
 import { StructureSection } from "@/components/sections/structure";
 import { MessageThread } from "@/components/sections/message-thread";
+import { FilmTeaser } from "@/components/sections/film-teaser";
 import { ToolsSection } from "@/components/sections/tools";
 import { Timeline } from "@/components/sections/timeline";
 import { MistakesSection } from "@/components/sections/mistakes";
@@ -23,6 +24,8 @@ export default function HomePage() {
       <StructureSection />
       {/* The payoff of "how the team works": the real exchange. */}
       <MessageThread />
+      {/* Film teaser — the team's own story, on film, routes to /film. */}
+      <FilmTeaser />
       <ToolsSection />
       {/* "How we got here" — sits right before the honest mistakes section. */}
       <Timeline />
