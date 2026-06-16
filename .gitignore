@@ -20,3 +20,9 @@ dist/
 npm-debug.log*
 # backups (kept locally, not committed by default)
 backup/
+
+# review artifacts
+/*.png
+/*.jpeg
+.playwright-mcp/
+orchestra-site/.playwright-mcp/

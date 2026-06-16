@@ -1,29 +1,24 @@
-import { Nav } from "../components/sections/nav";
-import { Hero } from "../components/sections/hero";
-import { Features } from "../components/sections/features";
-import { HowItWorks } from "../components/sections/how-it-works";
-import { RoleStrip } from "../components/sections/role-strip";
-import { WaitlistCta } from "../components/sections/waitlist-cta";
-import { Footer } from "../components/sections/footer";
-import { WaitlistProvider } from "../components/waitlist/waitlist-provider";
+import { Hero } from "@/components/sections/hero";
+import { TeamsSection } from "@/components/sections/teams";
+import { StructureSection } from "@/components/sections/structure";
+import { ToolsSection } from "@/components/sections/tools";
+import { MistakesSection } from "@/components/sections/mistakes";
+import { TeamTeaser } from "@/components/sections/team-teaser";
 
 /**
- * Orchestra launch landing page. WaitlistProvider wraps the whole page so the
- * hero form, the bottom-CTA form, and both live counters share one count —
- * loaded from GET /api/waitlist/count on mount and refreshed on every join.
+ * Home — the story, in order:
+ * hero → how agent teams work → our structure → skills/MCP/plugins →
+ * mistakes → team teaser. Copy is verbatim from knowledge/site-content-ru.md.
  */
-export default function Home() {
+export default function HomePage() {
   return (
-    <WaitlistProvider>
-      <Nav />
-      <main>
-        <Hero />
-        <Features />
-        <HowItWorks />
-        <RoleStrip />
-        <WaitlistCta />
-      </main>
-      <Footer />
-    </WaitlistProvider>
+    <>
+      <Hero />
+      <TeamsSection />
+      <StructureSection />
+      <ToolsSection />
+      <MistakesSection />
+      <TeamTeaser />
+    </>
   );
 }

@@ -1,25 +1,27 @@
 "use client";
 
+import { type ReactNode } from "react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 
+const EASE_EDITORIAL = [0.32, 0.72, 0, 1] as const;
+
 type RevealProps = {
-  children: React.ReactNode;
-  /** stagger offset in seconds for sequenced reveals */
+  children: ReactNode;
+  /** stagger offset in seconds when several Reveals sit in a list */
   delay?: number;
-  /** translate distance in px before settling */
-  y?: number;
   className?: string;
-  as?: "div" | "section" | "li" | "article";
+  /** render as a list item, paragraph, etc. — defaults to a div */
+  as?: "div" | "li" | "section" | "article" | "header" | "p";
 };
 
 /**
- * Scroll-triggered reveal. Fades + lifts content into place once when it
- * enters the viewport. Honors prefers-reduced-motion by rendering statically.
+ * Scroll-entry primitive: a gentle, heavy fade-up with a slight blur that
+ * settles via a custom editorial easing curve. Transform + opacity + filter
+ * only. Honors prefers-reduced-motion by rendering the final state immediately.
  */
 export function Reveal({
   children,
   delay = 0,
-  y = 24,
   className,
   as = "div",
 }: RevealProps) {
@@ -32,11 +34,12 @@ export function Reveal({
   }
 
   const variants: Variants = {
-    hidden: { opacity: 0, y },
+    hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay },
+      filter: "blur(0px)",
+      transition: { duration: 0.8, ease: EASE_EDITORIAL, delay },
     },
   };
 

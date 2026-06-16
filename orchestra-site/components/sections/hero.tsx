@@ -1,49 +1,72 @@
-import { Aurora } from "../motion/aurora";
-import { Reveal } from "../motion/reveal";
-import { LiveCounter } from "../waitlist/live-counter";
-import { WaitlistForm } from "../waitlist/waitlist-form";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { IslandLink } from "@/components/ui/island-link";
+import { Reveal } from "@/components/motion/reveal";
+import { CountUp } from "@/components/motion/count-up";
+
+const STATS = [
+  { value: 6, label: "агентов на Opus" },
+  { value: 2, label: "волны со строгими барьерами" },
+  { value: 1, label: "правило держит всё — idle-during-QA" },
+  { value: 6, label: "честных ошибки внутри" },
+] as const;
 
 /**
- * Hero. Aurora backdrop + a staggered on-load reveal of eyebrow → headline →
- * subhead → email capture → live counter. The email capture and counter are
- * the live, contract-backed pieces; everything else is static §2 copy.
+ * Hero — left-aligned editorial opening on warm paper. No centered-over-mesh
+ * cliché: a confident Cyrillic display headline, a measured subhead, two CTAs,
+ * and a mono stat strip with count-ups.
  */
 export function Hero() {
   return (
-    <section
-      id="top"
-      className="relative isolate overflow-hidden px-5 pt-20 pb-24 sm:px-8 sm:pt-28 sm:pb-32"
-    >
-      <Aurora />
-
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-        <Reveal delay={0}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-edge bg-surface/60 px-3.5 py-1.5 text-xs font-medium tracking-wide text-muted">
-            <span className="h-1.5 w-1.5 rounded-full bg-fuchsia" aria-hidden="true" />
-            Now forming the first section.
-          </span>
+    <section className="bg-paper px-4 pt-36 pb-24 sm:px-8 sm:pt-44 sm:pb-32">
+      <div className="mx-auto w-full max-w-[1200px]">
+        <Reveal>
+          <Eyebrow>Презентация, которая документирует саму себя</Eyebrow>
         </Reveal>
 
-        <Reveal delay={0.08}>
-          <h1 className="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl">
-            Conduct a team of <span className="text-aurora">AI agents.</span>
+        <Reveal delay={0.05}>
+          <h1 className="mt-7 max-w-[18ch] font-display text-[2.6rem] leading-[1.04] font-bold tracking-tight text-ink sm:text-6xl lg:text-7xl">
+            Эту страницу построила команда ИИ-агентов.{" "}
+            <span className="text-vermilion">Вот как — и где мы ошиблись.</span>
           </h1>
         </Reveal>
 
-        <Reveal delay={0.16}>
-          <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-muted sm:text-xl">
-            Orchestra turns one assistant into a coordinated crew — agents that
-            plan, build, test, and review in parallel, with quality gates
-            between every phase. Ship faster, trust what ships.
+        <Reveal delay={0.1}>
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl">
+            Шесть агентов Claude Code на Opus: оркестратор, аналитик, фронтенд,
+            бэкенд, тестировщик и ревьюер. Они работали параллельно, передавали
+            работу через барьеры качества — и не дали ни одному агенту проверять
+            собственную работу. Этот сайт — их отчёт о самих себе.
           </p>
         </Reveal>
 
-        <Reveal delay={0.24} className="mt-9 flex w-full flex-col items-center">
-          <WaitlistForm idPrefix="hero" />
+        <Reveal delay={0.15}>
+          <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <IslandLink href="/agents">Познакомиться с командой</IslandLink>
+            <IslandLink href="/goal" variant="ghost">
+              Читать цель
+            </IslandLink>
+          </div>
         </Reveal>
 
-        <Reveal delay={0.32} className="mt-7">
-          <LiveCounter />
+        <Reveal delay={0.2}>
+          <p className="mt-6 font-mono text-[13px] text-ink-muted">
+            Без приукрашивания. Ошибки — внутри, не спрятаны.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.25}>
+          <dl className="mt-20 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-line pt-12 lg:grid-cols-4">
+            {STATS.map((stat) => (
+              <div key={stat.label}>
+                <dt className="font-display text-4xl font-bold text-ink sm:text-5xl">
+                  <CountUp value={stat.value} />
+                </dt>
+                <dd className="mt-3 max-w-[22ch] text-sm leading-snug text-ink-muted">
+                  {stat.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </Reveal>
       </div>
     </section>

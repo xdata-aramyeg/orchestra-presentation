@@ -1,41 +1,52 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Geist, JetBrains_Mono } from "next/font/google";
+import { Unbounded, Onest, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { SiteNav } from "@/components/site/nav";
+import { SiteFooter } from "@/components/site/footer";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
-  subsets: ["latin"],
+/*
+ * Cyrillic-capable type system (all three carry the `cyrillic` subset on Google
+ * Fonts, so Russian renders without falling back to a system font):
+ *   display — Unbounded (expressive, confident headlines)
+ *   body/UI — Onest (clean, modern, excellent Cyrillic)
+ *   mono    — JetBrains Mono (technical labels, handles, slugs)
+ */
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin", "cyrillic"],
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
+const onest = Onest({
+  variable: "--font-onest",
+  subsets: ["latin", "cyrillic"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+  weight: ["400", "500", "600"],
+});
+
 export const metadata: Metadata = {
-  title: "Orchestra — Conduct a team of AI agents",
+  title: "Orchestra — сайт, который построил сам себя",
   description:
-    "Orchestra turns one assistant into a coordinated crew — agents that plan, build, test, and review in parallel, with quality gates between every phase. Join the waitlist.",
+    "Самореферентная презентация: команда из шести агентов Claude Code на Opus спланировала, построила, протестировала и проверила эту страницу — параллельно, с барьерами качества и честными ошибками.",
   openGraph: {
-    title: "Orchestra — Conduct a team of AI agents",
+    title: "Orchestra — сайт, который построил сам себя",
     description:
-      "Stop babysitting one agent at a time. Run a whole team of specialist agents in parallel, with quality gates between each phase.",
+      "Шесть агентов Claude Code: оркестратор, аналитик, фронтенд, бэкенд, тестировщик и ревьюер. Их отчёт о самих себе — ошибки включительно.",
     type: "website",
+    locale: "ru_RU",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070a12",
+  themeColor: "#fbfaf7",
   width: "device-width",
   initialScale: 1,
 };
@@ -47,10 +58,15 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${bricolage.variable} ${geist.variable} ${jetbrainsMono.variable}`}
+      lang="ru"
+      className={`${unbounded.variable} ${onest.variable} ${jetbrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body className="min-h-[100dvh] antialiased">
+        <div className="grain" aria-hidden="true" />
+        <SiteNav />
+        <main>{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }

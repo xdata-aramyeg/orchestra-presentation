@@ -1,42 +1,42 @@
 @import "tailwindcss";
 
 /*
- * Orchestra design tokens — chosen via ui-ux-pro-max (Dark Mode OLED + Waitlist
- * pattern), elevated to a vibrant aurora. Tokens are recorded once here and reused
- * everywhere; never hardcode ad-hoc colors in components.
+ * Orchestra design tokens — LIGHT editorial luxury.
+ * Direction: a beautifully typeset engineering field-notes / case study.
+ * Chosen via ui-ux-pro-max + frontend-design + high-end visual taste.
+ * Warm paper canvas, a single warm vermilion accent, confident Cyrillic display.
+ * Tokens are recorded once here and reused everywhere — never hardcode ad-hoc colors.
  */
 @theme {
-  /* Surfaces (midnight) */
-  --color-base: #070a12;
-  --color-surface: #0e1320;
-  --color-elevated: #141a28;
+  /* Surfaces — warm paper */
+  --color-paper: #fbfaf7; /* page background */
+  --color-paper-alt: #f3f0e9; /* alternating sections */
+  --color-card: #fffefb; /* inner card core (a touch lighter than paper) */
+  --color-shell: #f1ede4; /* outer bezel shell tint */
 
-  /* Text */
-  --color-foreground: #f4f7ff;
-  --color-muted: #8a93a6;
+  /* Ink */
+  --color-ink: #1a1714; /* primary text */
+  --color-ink-soft: #3b3a36; /* secondary text */
+  --color-ink-muted: #6f6a61; /* tertiary / captions */
 
-  /* Lines */
-  --color-edge: rgba(148, 163, 184, 0.14);
-  --color-edge-strong: rgba(148, 163, 184, 0.28);
+  /* The single accent — editorial vermilion */
+  --color-vermilion: #c5482f;
+  --color-vermilion-soft: #e9d8d0; /* tinted accent surface */
 
-  /* Brand spectrum — the "orchestra" of voices resolving into one */
-  --color-violet: #8b5cf6;
-  --color-indigo: #6366f1;
-  --color-fuchsia: #e64bd9;
-  --color-cyan: #22d3ee;
+  /* Hairlines */
+  --color-line: rgba(26, 23, 20, 0.12);
+  --color-line-strong: rgba(26, 23, 20, 0.22);
 
-  /* Semantic */
-  --color-go: #34d399; /* success / live / "join" positive */
-  --color-warn: #fbbf24;
-  --color-danger: #fb7185;
-
-  /* Type */
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  /* Type — all families carry Cyrillic */
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
-  /* Motion easing tokens */
-  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Motion — custom editorial easing only */
+  --ease-editorial: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Content rhythm */
+  --container-editorial: 1200px;
 }
 
 @layer base {
@@ -45,93 +45,56 @@
   }
 
   body {
-    background: var(--color-base);
-    color: var(--color-foreground);
+    background: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-sans);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  /* Tabular figures everywhere a number can change, to prevent layout shift */
+  ::selection {
+    background: var(--color-vermilion);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-vermilion);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Tabular figures wherever a number can change, to prevent layout shift */
   .tabular {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum";
   }
-
-  /* Brand gradient text */
-  .text-aurora {
-    background-image: linear-gradient(
-      100deg,
-      var(--color-violet),
-      var(--color-fuchsia) 38%,
-      var(--color-cyan) 78%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  ::selection {
-    background: color-mix(in srgb, var(--color-fuchsia) 40%, transparent);
-    color: var(--color-foreground);
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--color-cyan);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-}
-
-/* Aurora blobs drifting in the hero background */
-@keyframes aurora-drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(6%, -4%, 0) scale(1.15);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-}
-
-/* Marquee for the logo / role strip */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 28s linear infinite;
-}
-
-.aurora-blob {
-  animation: aurora-drift 18s ease-in-out infinite;
-  will-change: transform;
 }
 
 /*
- * Global safety net: honor prefers-reduced-motion for every CSS animation/
- * transition (marquee, aurora, etc.). Component-level Motion also checks
- * useReducedMotion(), this catches the pure-CSS pieces.
+ * Film-grain overlay — a fixed, non-interactive layer that gives the paper a
+ * physical, printed feel. Kept very subtle (opacity ~0.03) per the brief.
  */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .animate-marquee,
-  .aurora-blob {
-    animation: none !important;
   }
 }
