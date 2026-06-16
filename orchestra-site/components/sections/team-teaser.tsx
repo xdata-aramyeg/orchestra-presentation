@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
 import { IslandLink } from "@/components/ui/island-link";
 import { Reveal } from "@/components/motion/reveal";
+import { AgentAvatar, type AvatarSlug } from "@/components/avatars";
 import { AGENTS } from "@/content/agents";
 
 /** §1.6 — the team teaser at the bottom of the home page. */
@@ -39,8 +40,13 @@ export function TeamTeaser() {
             {AGENTS.map((agent) => (
               <li
                 key={agent.slug}
-                className="flex items-baseline gap-4 border-b border-line py-4"
+                className="flex items-center gap-4 border-b border-line py-3"
               >
+                <AgentAvatar
+                  slug={agent.slug as AvatarSlug}
+                  size={40}
+                  play="inView"
+                />
                 <span className="font-mono text-xs text-vermilion">
                   {agent.index}
                 </span>

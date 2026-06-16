@@ -10,6 +10,7 @@ import {
 import { Section } from "@/components/ui/section";
 import { BezelCard } from "@/components/ui/bezel-card";
 import { Reveal } from "@/components/motion/reveal";
+import { AgentAvatar, type AvatarSlug } from "@/components/avatars";
 import { AGENTS, getAgent } from "@/content/agents";
 
 type PageParams = { params: Promise<{ slug: string }> };
@@ -63,21 +64,36 @@ export default async function AgentPage({ params }: PageParams) {
             </Link>
           </Reveal>
 
-          <Reveal delay={0.05}>
-            <p className="mt-10 font-mono text-sm text-vermilion">
-              {agent.index}
-            </p>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h1 className="mt-3 font-display text-5xl font-bold tracking-tight text-ink sm:text-6xl lg:text-7xl">
-              {agent.handle}
-            </h1>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-ink-muted">
-              {agent.role}
-            </p>
-          </Reveal>
+          <div className="mt-10 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between sm:gap-10">
+            <div>
+              <Reveal delay={0.05}>
+                <p className="font-mono text-sm text-vermilion">
+                  {agent.index}
+                </p>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h1 className="mt-3 font-display text-5xl font-bold tracking-tight text-ink sm:text-6xl lg:text-7xl">
+                  {agent.handle}
+                </h1>
+              </Reveal>
+              <Reveal delay={0.12}>
+                <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-ink-muted">
+                  {agent.role}
+                </p>
+              </Reveal>
+            </div>
+            <Reveal delay={0.1}>
+              <div className="flex h-44 w-44 shrink-0 items-center justify-center rounded-[1.75rem] border border-line bg-gradient-to-b from-shell to-paper-alt p-2 shadow-[0_1px_2px_rgba(26,23,20,0.04),0_18px_40px_-28px_rgba(26,23,20,0.35)]">
+                <div className="flex h-full w-full items-center justify-center rounded-[1.25rem] border border-line bg-card shadow-[inset_0_1px_0_rgba(255,255,255,1)]">
+                  <AgentAvatar
+                    slug={agent.slug as AvatarSlug}
+                    size={132}
+                    play="auto"
+                  />
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 

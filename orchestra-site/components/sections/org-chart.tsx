@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { AgentAvatar, type AvatarSlug } from "@/components/avatars";
 
 const EASE = [0.32, 0.72, 0, 1] as const;
 
@@ -85,6 +86,11 @@ function FlowNode({
           : "border-line shadow-[inset_0_1px_0_rgba(255,255,255,1)]"
       } ${isDimmed ? "opacity-40" : "opacity-100"}`}
     >
+      <span
+        className={`mb-2 flex ${wide ? "justify-center" : "justify-start"}`}
+      >
+        <AgentAvatar slug={node.slug as AvatarSlug} size={40} play="inView" />
+      </span>
       <span className="block font-display text-lg font-semibold tracking-tight text-ink">
         {node.handle}
       </span>

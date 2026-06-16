@@ -1,0 +1,472 @@
+/*
+ * Agent avatar emblems — ultra-light line-art, one vermilion accent each.
+ * Ported verbatim (geometry + timing) from knowledge/avatar-gallery.html.
+ *
+ * Design of the gating: each element's BASE declaration is its resolved "done"
+ * pose. Adding `.av-run` to the <svg> layers on the looping animation. So an
+ * un-run avatar (static mode, or reduced motion) already shows the resolved
+ * pose with no JS required, and prefers-reduced-motion simply kills any run.
+ * transform/opacity only; custom editorial curve.
+ */
+
+.av-svg {
+  --av-curve: cubic-bezier(0.32, 0.72, 0, 1);
+  display: block;
+}
+
+.av-line {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.av-faint {
+  stroke: var(--color-ink);
+  opacity: 0.22;
+}
+.av-acc {
+  stroke: var(--color-vermilion);
+}
+.av-accfill {
+  fill: var(--color-vermilion);
+}
+
+/* ════════ Маэстро — baton beats 1-2-3 ════════ */
+.mae-baton {
+  transform-box: view-box;
+  transform-origin: 62px 152px;
+  transform: rotate(7deg);
+}
+.mae-d1,
+.mae-d2,
+.mae-d3 {
+  opacity: 1;
+}
+.av-run .mae-baton {
+  animation: mae-baton 8s var(--av-curve) infinite;
+}
+.av-run .mae-d1 {
+  animation: mae-d1 8s var(--av-curve) infinite;
+}
+.av-run .mae-d2 {
+  animation: mae-d2 8s var(--av-curve) infinite;
+}
+.av-run .mae-d3 {
+  animation: mae-d3 8s var(--av-curve) infinite;
+}
+@keyframes mae-baton {
+  0%,
+  7% {
+    transform: rotate(7deg);
+  }
+  11% {
+    transform: rotate(-6deg);
+  }
+  15% {
+    transform: rotate(6deg);
+  }
+  19% {
+    transform: rotate(-4deg);
+  }
+  23% {
+    transform: rotate(5deg);
+  }
+  27% {
+    transform: rotate(-3deg);
+  }
+  34%,
+  100% {
+    transform: rotate(7deg);
+  }
+}
+@keyframes mae-d1 {
+  0%,
+  8% {
+    opacity: 0;
+  }
+  11%,
+  15% {
+    opacity: 1;
+  }
+  20%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes mae-d2 {
+  0%,
+  14% {
+    opacity: 0;
+  }
+  17%,
+  21% {
+    opacity: 1;
+  }
+  26%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes mae-d3 {
+  0%,
+  20% {
+    opacity: 0;
+  }
+  23%,
+  27% {
+    opacity: 1;
+  }
+  32%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ════════ Либреттист — pen draws an underline ════════ */
+.lib-ul {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+}
+.lib-pen {
+  transform-box: fill-box;
+  transform: translate(96px, -7px);
+}
+.av-run .lib-ul {
+  animation: lib-ul 7s var(--av-curve) infinite;
+}
+.av-run .lib-pen {
+  animation: lib-pen 7s var(--av-curve) infinite;
+}
+@keyframes lib-ul {
+  0%,
+  10% {
+    stroke-dashoffset: 100;
+  }
+  50%,
+  90% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+  }
+}
+@keyframes lib-pen {
+  0%,
+  10% {
+    transform: translate(0, 4px);
+  }
+  50% {
+    transform: translate(96px, 4px);
+  }
+  60%,
+  90% {
+    transform: translate(96px, -7px);
+  }
+  100% {
+    transform: translate(0, 4px);
+  }
+}
+
+/* ════════ Сценограф — stage-frame snaps into register ════════ */
+.scn-frame {
+  transform-box: fill-box;
+  transform: translateX(0);
+  opacity: 1;
+}
+.av-run .scn-frame {
+  animation: scn-frame 7s var(--av-curve) infinite;
+}
+@keyframes scn-frame {
+  0% {
+    transform: translateX(-128px);
+    opacity: 0;
+  }
+  9% {
+    opacity: 1;
+  }
+  26% {
+    transform: translateX(7px);
+  }
+  33% {
+    transform: translateX(0);
+  }
+  88% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-128px);
+    opacity: 0;
+  }
+}
+
+/* ════════ Машинист — gear turns + terminal caret blinks ════════ */
+.mac-gear {
+  transform-box: view-box;
+  transform-origin: 78px 76px;
+  transform: rotate(0deg);
+}
+.mac-caret {
+  opacity: 1;
+}
+.av-run .mac-gear {
+  animation: mac-gear 9s var(--av-curve) infinite;
+}
+.av-run .mac-caret {
+  animation: mac-caret 1.1s steps(1, end) infinite;
+}
+@keyframes mac-gear {
+  0%,
+  9% {
+    transform: rotate(0deg);
+  }
+  13%,
+  22% {
+    transform: rotate(45deg);
+  }
+  26%,
+  35% {
+    transform: rotate(90deg);
+  }
+  39%,
+  48% {
+    transform: rotate(135deg);
+  }
+  52%,
+  61% {
+    transform: rotate(180deg);
+  }
+  65%,
+  74% {
+    transform: rotate(225deg);
+  }
+  78%,
+  87% {
+    transform: rotate(270deg);
+  }
+  91%,
+  96% {
+    transform: rotate(315deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes mac-caret {
+  0%,
+  52% {
+    opacity: 1;
+  }
+  53%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ════════ Камертон — fork struck → ripple + "in tune" ✓ ════════ */
+.kam-pL,
+.kam-pR {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: none;
+}
+.kam-ripple {
+  fill: none;
+  stroke: var(--color-vermilion);
+  stroke-width: 2.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+.kam-r2 {
+  opacity: 0.3;
+  transform: scale(1.1);
+}
+.kam-check {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+.av-run .kam-pL {
+  animation: kam-vL 8s var(--av-curve) infinite;
+}
+.av-run .kam-pR {
+  animation: kam-vR 8s var(--av-curve) infinite;
+}
+.av-run .kam-r1 {
+  animation: kam-ring 8s var(--av-curve) infinite;
+}
+.av-run .kam-r2 {
+  animation: kam-ring 8s var(--av-curve) infinite 0.55s;
+}
+.av-run .kam-r3 {
+  animation: kam-ring 8s var(--av-curve) infinite 1.05s;
+}
+.av-run .kam-check {
+  animation: kam-check 8s var(--av-curve) infinite;
+}
+@keyframes kam-vL {
+  0%,
+  84% {
+    transform: translateX(0);
+  }
+  85% {
+    transform: translateX(-2.4px);
+  }
+  87% {
+    transform: translateX(2px);
+  }
+  89% {
+    transform: translateX(-1.4px);
+  }
+  91% {
+    transform: translateX(1px);
+  }
+  93% {
+    transform: translateX(-0.5px);
+  }
+  95%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes kam-vR {
+  0%,
+  84% {
+    transform: translateX(0);
+  }
+  85% {
+    transform: translateX(2.4px);
+  }
+  87% {
+    transform: translateX(-2px);
+  }
+  89% {
+    transform: translateX(1.4px);
+  }
+  91% {
+    transform: translateX(-1px);
+  }
+  93% {
+    transform: translateX(0.5px);
+  }
+  95%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes kam-ring {
+  0%,
+  84% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  85% {
+    opacity: 0.55;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+@keyframes kam-check {
+  0%,
+  86% {
+    stroke-dashoffset: 26;
+    opacity: 0;
+  }
+  92% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  99% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* ════════ Рецензент — magnifier sweeps then stamps a ✓ ════════ */
+.rev-glass {
+  transform-box: fill-box;
+  transform: translate(68px, 58px);
+}
+.rev-check {
+  stroke-dasharray: 42;
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+.av-run .rev-glass {
+  animation: rev-glass 8s var(--av-curve) infinite;
+}
+.av-run .rev-check {
+  animation: rev-check 8s var(--av-curve) infinite;
+}
+@keyframes rev-glass {
+  0%,
+  6% {
+    transform: translate(0, 0);
+  }
+  60% {
+    transform: translate(60px, 52px);
+  }
+  74%,
+  90% {
+    transform: translate(68px, 58px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes rev-check {
+  0%,
+  64% {
+    stroke-dashoffset: 42;
+    opacity: 0;
+  }
+  73% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/*
+ * Safety net: if scripting is unavailable the JS never gates `.av-run`, but the
+ * base poses are already the resolved state, so nothing breaks. This media query
+ * additionally guarantees that even a forced run is frozen for reduced-motion
+ * users — killing the animation reveals the resolved base pose.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .av-run :is(
+      .mae-baton,
+      .mae-d1,
+      .mae-d2,
+      .mae-d3,
+      .lib-ul,
+      .lib-pen,
+      .scn-frame,
+      .mac-gear,
+      .mac-caret,
+      .kam-pL,
+      .kam-pR,
+      .kam-r1,
+      .kam-r2,
+      .kam-r3,
+      .kam-check,
+      .rev-glass,
+      .rev-check
+    ) {
+    animation: none !important;
+  }
+}

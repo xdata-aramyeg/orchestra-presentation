@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Unbounded, Onest, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "@/components/avatars/avatars.css";
 import { SiteNav } from "@/components/site/nav";
 import { SiteFooter } from "@/components/site/footer";
 

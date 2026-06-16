@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { BezelCard } from "@/components/ui/bezel-card";
+import { AgentAvatar, type AvatarSlug } from "@/components/avatars";
 import { type Agent } from "@/content/agents";
 
 /**
@@ -25,7 +26,11 @@ export function AgentCard({ agent }: { agent: Agent }) {
           />
         </div>
 
-        <h3 className="mt-8 font-display text-2xl font-semibold tracking-tight text-ink">
+        <div className="mt-2 flex justify-center">
+          <AgentAvatar slug={agent.slug as AvatarSlug} size={96} play="inView" />
+        </div>
+
+        <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-ink">
           {agent.handle}
         </h3>
         <p className="mt-1 font-mono text-xs uppercase tracking-[0.16em] text-ink-muted">
