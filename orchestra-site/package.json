@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
+    "@react-three/fiber": "^9.6.1",
     "@remotion/cli": "^4.0.478",
     "@remotion/player": "^4.0.478",
+    "@remotion/three": "^4.0.478",
+    "@types/three": "^0.184.1",
     "better-sqlite3": "^12.11.1",
     "gsap": "^3.15.0",
     "lucide-react": "^1.20.0",
@@ -20,6 +23,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "remotion": "^4.0.478",
+    "three": "^0.184.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

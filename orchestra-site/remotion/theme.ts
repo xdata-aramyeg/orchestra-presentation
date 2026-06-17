@@ -8,7 +8,7 @@
  * hardcoding hashed family names.
  */
 export const FPS = 30;
-export const DURATION_IN_FRAMES = 2250; // 75s @ 30fps
+export const DURATION_IN_FRAMES = 2340; // 78s @ 30fps (+ the 3D structure beat)
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
 
@@ -53,8 +53,9 @@ export const STROKE = {
 export const SCENES = [
   { id: "brief", label: "Бриф", dur: 150 },
   { id: "team", label: "Команда собирается", dur: 210 },
+  { id: "orgGraph3d", label: "Структура в пространстве", dur: 150 },
   { id: "score", label: "Партитура", dur: 180 },
-  { id: "twoWaves", label: "Две волны параллельно", dur: 270 },
+  { id: "twoWaves", label: "Две волны параллельно", dur: 210 },
   { id: "barrier", label: "Барьер держит", dur: 210 },
   { id: "qaGate", label: "Гейт QA", dur: 270 },
   { id: "review", label: "Ревью — только читать", dur: 180 },

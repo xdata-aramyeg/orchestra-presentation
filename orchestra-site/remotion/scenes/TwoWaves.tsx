@@ -163,7 +163,7 @@ export const TwoWaves = () => {
         />
       ))}
 
-      <Caption from={170}>
+      <Caption from={150}>
         Волна 2: фронтенд и бэкенд строят одновременно. Разные файлы, общий контракт.
       </Caption>
     </AbsoluteFill>
