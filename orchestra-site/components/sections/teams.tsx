@@ -53,7 +53,7 @@ export function TeamsSection() {
         </Reveal>
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
         <Reveal>
           <BezelCard className="h-full" innerClassName="h-full">
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-ink-muted">
@@ -79,7 +79,7 @@ export function TeamsSection() {
         </Reveal>
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
         {PILLARS.map((pillar, i) => (
           <Reveal key={pillar.title} delay={i * 0.08}>
             <BezelCard className="h-full" innerClassName="h-full">

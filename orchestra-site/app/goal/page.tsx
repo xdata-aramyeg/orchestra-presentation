@@ -85,7 +85,7 @@ export default function GoalPage() {
             Что сайт обязан показать
           </h2>
         </Reveal>
-        <ol className="mt-12 grid gap-5 md:grid-cols-2">
+        <ol className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
           {SHOWS.map((item, i) => (
             <Reveal as="li" key={item.name} delay={(i % 2) * 0.06}>
               <BezelCard className="h-full" innerClassName="flex h-full gap-5">

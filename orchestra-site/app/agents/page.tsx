@@ -36,7 +36,7 @@ export default function AgentsIndexPage() {
       </section>
 
       <Section className="!pt-4">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {AGENTS.map((agent, i) => (
             <Reveal key={agent.slug} delay={(i % 3) * 0.08}>
               <AgentCard agent={agent} />

@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { SectionMarker } from "@/components/ui/section-marker";
 import { BezelCard } from "@/components/ui/bezel-card";
 import { Reveal } from "@/components/motion/reveal";
+import { CodeSnippets } from "@/components/under-the-hood/code-snippets";
 import { DEEP_CARDS, QUICKSTART } from "@/content/under-the-hood";
 
 /**
@@ -32,10 +33,10 @@ export function UnderTheHood() {
       </div>
 
       {/* Six deep cards */}
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
+      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
         {DEEP_CARDS.map((card, i) => (
-          <Reveal key={card.n} delay={(i % 2) * 0.06}>
-            <BezelCard className="h-full" innerClassName="flex h-full flex-col">
+          <Reveal key={card.n} delay={(i % 2) * 0.06} className="min-w-0">
+            <BezelCard className="h-full min-w-0" innerClassName="flex h-full min-w-0 flex-col">
               <div className="flex items-baseline gap-3">
                 <span className="font-mono text-sm text-vermilion">
                   {card.n}
@@ -60,6 +61,19 @@ export function UnderTheHood() {
           </Reveal>
         ))}
       </div>
+
+      {/* Copyable config snippets — paste-and-go */}
+      <Reveal delay={0.05}>
+        <p className="mt-14 font-mono text-xs uppercase tracking-[0.18em] text-vermilion">
+          Скопируйте и вставьте
+        </p>
+        <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
+          Три кусочка конфигурации, с которых начинается команда: флаг,
+          роль-субагент и обычная просьба на русском. Нажмите «Скопировать» —
+          и вставьте к себе.
+        </p>
+      </Reveal>
+      <CodeSnippets />
 
       {/* Quickstart */}
       <Reveal delay={0.05}>

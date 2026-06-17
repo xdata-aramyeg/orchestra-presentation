@@ -85,11 +85,11 @@ export function ToolsSection() {
         </Reveal>
       </div>
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+      <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <ToolGroup label="Скиллы · skills" items={SKILLS} />
         </Reveal>
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <Reveal delay={0.06}>
             <ToolGroup label="MCP-серверы" items={MCPS} />
           </Reveal>

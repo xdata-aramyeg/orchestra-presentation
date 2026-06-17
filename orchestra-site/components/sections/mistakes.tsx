@@ -72,7 +72,7 @@ export function MistakesSection() {
         </Reveal>
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {MISTAKES.map((mistake, i) => (
           <Reveal key={mistake.n} delay={(i % 3) * 0.08}>
             <MistakeCard mistake={mistake} />

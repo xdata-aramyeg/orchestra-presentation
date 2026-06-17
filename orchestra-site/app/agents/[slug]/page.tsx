@@ -206,7 +206,7 @@ export default async function AgentPage({ params }: PageParams) {
 
       {/* Prev / next agent — fills the foot with real navigation */}
       <Section className="!py-12 sm:!py-16">
-        <div className="mx-auto grid max-w-[1000px] gap-4 sm:grid-cols-2">
+        <div className="mx-auto grid max-w-[1000px] grid-cols-1 gap-4 sm:grid-cols-2">
           <Link
             href={`/agents/${prev.slug}`}
             className="group flex items-center gap-4 rounded-[1.25rem] border border-line bg-card p-5 transition-colors duration-200 hover:border-vermilion/50"
