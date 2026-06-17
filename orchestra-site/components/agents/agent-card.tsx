@@ -8,7 +8,7 @@ import { type Agent } from "@/content/agents";
  * Double-bezel agent card linking to the character page. Carries the editorial
  * index marker, the Cyrillic handle, the role in mono, and a one-line tagline.
  */
-export function AgentCard({ agent }: { agent: Agent }) {
+export function AgentCard({ agent, cue }: { agent: Agent; cue?: number }) {
   return (
     <Link
       href={`/agents/${agent.slug}`}
@@ -27,7 +27,12 @@ export function AgentCard({ agent }: { agent: Agent }) {
         </div>
 
         <div className="mt-2 flex justify-center">
-          <AgentAvatar slug={agent.slug as AvatarSlug} size={96} play="inView" />
+          <AgentAvatar
+            slug={agent.slug as AvatarSlug}
+            size={96}
+            play="inView"
+            cue={cue}
+          />
         </div>
 
         <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-ink">

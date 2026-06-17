@@ -21,6 +21,13 @@ type AgentAvatarProps = {
   size?: Size;
   play?: Play;
   className?: string;
+  /**
+   * External cue: each time this number increases the avatar restarts its
+   * action loop from the top (skipping the draw-in) — used by the conducted
+   * "настройка" sequence on /agents. Default 0 means "no external cue", so
+   * every other usage is unaffected. Ignored under reduced motion.
+   */
+  cue?: number;
 };
 
 /**
@@ -39,11 +46,16 @@ export function AgentAvatar({
   size = "md",
   play = "inView",
   className,
+  cue = 0,
 }: AgentAvatarProps) {
   const reduceMotion = useReducedMotion();
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [looping, setLooping] = useState(false);
+  // Bumped on every external cue to remount the line-art and so restart the
+  // CSS action loop from 0% (an in-place animation restart).
+  const [runKey, setRunKey] = useState(0);
+  const [cued, setCued] = useState(false);
 
   const emblem = EMBLEMS[slug];
   const px = typeof size === "number" ? size : NAMED_SIZES[size];
@@ -59,7 +71,16 @@ export function AgentAvatar({
     return () => clearTimeout(timer);
   }, [started, looping]);
 
-  const phase = !started ? "" : looping ? "av-run" : "av-in";
+  // External cue → jump straight to the running phase and restart its loop.
+  useEffect(() => {
+    if (cue <= 0 || reduceMotion) return;
+    setCued(true);
+    setLooping(true);
+    setRunKey((k) => k + 1);
+  }, [cue, reduceMotion]);
+
+  const active = started || cued;
+  const phase = !active ? "" : looping ? "av-run" : "av-in";
 
   return (
     <svg
@@ -71,7 +92,7 @@ export function AgentAvatar({
       height={px}
       className={`av-svg ${phase} ${className ?? ""}`}
     >
-      {emblem.body}
+      <g key={runKey}>{emblem.body}</g>
     </svg>
   );
 }

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Section } from "@/components/ui/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
-import { AgentCard } from "@/components/agents/agent-card";
-import { AGENTS } from "@/content/agents";
+import { ConductedGrid } from "@/components/agents/conducted-grid";
 
 export const metadata: Metadata = {
   title: "Команда — Orchestra",
@@ -36,13 +35,7 @@ export default function AgentsIndexPage() {
       </section>
 
       <Section className="!pt-4">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {AGENTS.map((agent, i) => (
-            <Reveal key={agent.slug} delay={(i % 3) * 0.08}>
-              <AgentCard agent={agent} />
-            </Reveal>
-          ))}
-        </div>
+        <ConductedGrid />
 
         <Reveal delay={0.1}>
           <p className="mt-12 font-mono text-[13px] leading-relaxed text-ink-muted [overflow-wrap:anywhere]">
