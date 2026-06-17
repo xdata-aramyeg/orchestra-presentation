@@ -29,7 +29,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   try {
-    const { position, count } = addEmail(parsed.data.email);
+    const { position, count } = await addEmail(parsed.data.email);
     return Response.json({ position, count }, { status: 201 });
   } catch (error) {
     if (error instanceof Error && error.message === "DUP") {

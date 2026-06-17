@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(): Promise<Response> {
   try {
-    const count = getCount();
+    const count = await getCount();
     return Response.json({ count }, { status: 200 });
   } catch (error) {
     console.error("GET /api/waitlist/count failed:", error);

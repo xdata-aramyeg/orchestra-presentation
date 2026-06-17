@@ -1,128 +1,97 @@
-import path from "node:path";
-import Database from "better-sqlite3";
-import type { Database as DatabaseType, Statement } from "better-sqlite3";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 /**
- * SQLite-backed waitlist store (better-sqlite3).
+ * Supabase (Postgres) backed waitlist store.
  *
- * - File-backed in normal runs (persists across restarts — AC10);
- *   in-memory under NODE_ENV=test so tests are isolated.
- * - A UNIQUE index on the normalized (trim + lowercase) email lets the DB
- *   itself enforce dedupe (AC5/AC7/AC8) — even against rapid double-submits.
- * - Parameterized statements only; never interpolate user input into SQL.
- * - A global singleton keeps Next.js dev hot-reload from reopening the DB.
+ * - Serverless-safe: the client is created lazily on first request, NOT at
+ *   module load, so `next build` succeeds with no Supabase env vars present.
+ * - Uses the SERVICE ROLE key (server-only) — never expose it to the client.
+ * - Dedupe is enforced by a UNIQUE index on `lower(email)` in Postgres; a
+ *   unique violation (SQLSTATE 23505) surfaces as Error('DUP'), preserving the
+ *   route's 409 behavior.
+ * - All access goes through the supabase-js query builder (parameterized by
+ *   construction) — user input is never interpolated into SQL.
  */
 
-type WaitlistStore = {
-  readonly db: DatabaseType;
-  readonly insert: Statement<[string, string]>;
-  readonly count: Statement<[]>;
-  readonly clear: Statement<[]>;
-  readonly clearSeq: Statement<[]>;
+const TABLE = "waitlist";
+const UNIQUE_VIOLATION = "23505";
+
+type WaitlistRow = { readonly id: number };
+
+const globalForSupabase = globalThis as unknown as {
+  __supabaseAdmin?: SupabaseClient;
 };
 
-type CountRow = { readonly c: number };
-
-const globalForDb = globalThis as unknown as {
-  __waitlistStore?: WaitlistStore;
-};
-
-function isTestEnv(): boolean {
-  return process.env.NODE_ENV === "test";
-}
-
-function resolveDatabaseFile(): string {
-  return isTestEnv() ? ":memory:" : path.join(process.cwd(), "waitlist.db");
-}
-
-function createStore(): WaitlistStore {
-  const db = new Database(resolveDatabaseFile());
-
-  // Durability + sane concurrency for the file-backed case.
-  db.pragma("journal_mode = WAL");
-  db.pragma("foreign_keys = ON");
-
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS waitlist (
-      id         INTEGER PRIMARY KEY AUTOINCREMENT,
-      email      TEXT NOT NULL,
-      created_at TEXT
-    );
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_waitlist_email_normalized
-      ON waitlist (lower(trim(email)));
-  `);
-
-  return {
-    db,
-    insert: db.prepare("INSERT INTO waitlist (email, created_at) VALUES (?, ?)"),
-    count: db.prepare("SELECT COUNT(*) AS c FROM waitlist"),
-    clear: db.prepare("DELETE FROM waitlist"),
-    clearSeq: db.prepare("DELETE FROM sqlite_sequence WHERE name = 'waitlist'"),
-  };
-}
-
-function getStore(): WaitlistStore {
-  if (!globalForDb.__waitlistStore) {
-    globalForDb.__waitlistStore = createStore();
+function readRequiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    // Request-time only — never thrown at build/import. Message names the
+    // missing var without leaking any value.
+    throw new Error(`Missing required environment variable: ${name}`);
   }
-  return globalForDb.__waitlistStore;
+  return value;
 }
 
-function normalizeEmail(email: string): string {
-  return email.trim().toLowerCase();
+/** Memoized service-role client. Created on first request, never at import. */
+function getClient(): SupabaseClient {
+  if (!globalForSupabase.__supabaseAdmin) {
+    const url = readRequiredEnv("SUPABASE_URL");
+    const serviceRoleKey = readRequiredEnv("SUPABASE_SERVICE_ROLE_KEY");
+
+    globalForSupabase.__supabaseAdmin = createClient(url, serviceRoleKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+  }
+  return globalForSupabase.__supabaseAdmin;
 }
 
-function isUniqueViolation(error: unknown): boolean {
-  return (
-    error instanceof Error &&
-    /UNIQUE constraint failed/i.test(error.message)
-  );
+function isUniqueViolation(error: { code?: string } | null): boolean {
+  return error?.code === UNIQUE_VIOLATION;
 }
 
 /**
  * Insert a new email and return its place in line.
  *
- * The email is normalized (trim + lowercase) before insert/compare. Because
- * rows are never deleted, the new total count is also this email's 1-based
- * position. Insert + count run in a single synchronous transaction so the
- * returned count always reflects the row just added.
+ * The email arrives already normalized (trim + lowercase) from the zod schema.
+ * `position` is the new row's identity `id` — the Nth-signup ordinal driving
+ * the "You're #N" UX. `count` is the exact current total on the list, fetched
+ * after the insert so it always reflects the row just added.
  *
  * @throws Error('DUP') when the (normalized) email is already on the list.
  */
-export function addEmail(email: string): { position: number; count: number } {
-  const normalized = normalizeEmail(email);
-  const store = getStore();
-  const createdAt = new Date().toISOString();
+export async function addEmail(
+  email: string,
+): Promise<{ position: number; count: number }> {
+  const client = getClient();
 
-  const run = store.db.transaction((value: string, timestamp: string) => {
-    store.insert.run(value, timestamp);
-    const { c } = store.count.get() as CountRow;
-    return c;
-  });
+  const { data, error } = await client
+    .from(TABLE)
+    .insert({ email })
+    .select("id")
+    .single<WaitlistRow>();
 
-  try {
-    const count = run(normalized, createdAt);
-    return { position: count, count };
-  } catch (error) {
+  if (error) {
     if (isUniqueViolation(error)) {
       throw new Error("DUP");
     }
-    throw error;
+    throw new Error(`Failed to add email: ${error.message}`);
   }
+
+  const count = await getCount();
+  return { position: data.id, count };
 }
 
 /** Current total number of emails on the waitlist. */
-export function getCount(): number {
-  const { c } = getStore().count.get() as CountRow;
-  return c;
-}
+export async function getCount(): Promise<number> {
+  const client = getClient();
 
-/** Test-only helper: wipe all rows and reset autoincrement. */
-export function _reset(): void {
-  const store = getStore();
-  const run = store.db.transaction(() => {
-    store.clear.run();
-    store.clearSeq.run();
-  });
-  run();
+  const { count, error } = await client
+    .from(TABLE)
+    .select("*", { count: "exact", head: true });
+
+  if (error) {
+    throw new Error(`Failed to read waitlist count: ${error.message}`);
+  }
+
+  return count ?? 0;
 }
