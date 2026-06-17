@@ -11,7 +11,7 @@ import { Reveal } from "@/components/motion/reveal";
  */
 export function FilmTeaser() {
   return (
-    <Section alt>
+    <Section id="film-teaser" alt>
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
         {/* Poster — a line-art "screen" still in the film's look */}
         <Reveal>

@@ -3,11 +3,13 @@ import { TeamsSection } from "@/components/sections/teams";
 import { StructureSection } from "@/components/sections/structure";
 import { MessageThread } from "@/components/sections/message-thread";
 import { FilmTeaser } from "@/components/sections/film-teaser";
+import { CyrillicMoment } from "@/components/sections/cyrillic-moment";
 import { ToolsSection } from "@/components/sections/tools";
 import { Timeline } from "@/components/sections/timeline";
 import { MistakesSection } from "@/components/sections/mistakes";
 import { UnderTheHood } from "@/components/sections/under-the-hood";
 import { TeamTeaser } from "@/components/sections/team-teaser";
+import { SectionNav } from "@/components/site/section-nav";
 
 /**
  * Home — the story, in order:
@@ -18,6 +20,8 @@ import { TeamTeaser } from "@/components/sections/team-teaser";
 export default function HomePage() {
   return (
     <>
+      {/* Home-only navigability: top progress bar + desktop dot-rail. */}
+      <SectionNav />
       <Hero />
       <TeamsSection />
       {/* Structure (#how) ends with the interactive two-wave OrgChart. */}
@@ -26,6 +30,8 @@ export default function HomePage() {
       <MessageThread />
       {/* Film teaser — the team's own story, on film, routes to /film. */}
       <FilmTeaser />
+      {/* Viewport-scale editorial beat punctuating the scroll. */}
+      <CyrillicMoment />
       <ToolsSection />
       {/* "How we got here" — sits right before the honest mistakes section. */}
       <Timeline />

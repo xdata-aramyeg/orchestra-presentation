@@ -178,7 +178,7 @@ export function OrgChart() {
   const state: ActiveState = { active, set: setActive };
 
   return (
-    <div className="mt-12 border-t border-line pt-10">
+    <div id="flow" className="mt-12 scroll-mt-24 border-t border-line pt-10">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h3 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           Те же две волны — как поток.
