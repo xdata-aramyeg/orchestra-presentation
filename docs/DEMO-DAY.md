@@ -60,7 +60,19 @@ You can have it improve **this very site** during the talk.
 - (Optional, looks great) you're already in tmux from the «Повторите сами» section — the
   teammates split into their own panes so the audience watches them work in parallel.
 
-### The kickoff prompt — paste this verbatim
+### Quick version — the roll call (best for *showing the spawn*)
+Fast, safe, no code touched — the team just assembles and checks in. Paste verbatim:
+> You are the Lead / orchestrator of the Orchestra agent team — read CLAUDE.md. We're live on
+> stage and I want to SHOW the team assembling. Spawn all six teammates — pm, frontend, backend,
+> qa, reviewer, chronicler — and have EACH send back ONE short line introducing itself: its role,
+> the files it owns, and one line of personality, in Russian (our project voice). Do NOT build
+> anything or touch any code — this is just the team checking in. When all six have reported,
+> print a one-line roster and stop.
+
+In tmux you'll watch six panes spring open as they spawn; each reports in; done in ~30–60s. Great
+"the team is real" beat without the risk of a live build.
+
+### Full version — the team does real work (paste this verbatim)
 > You are the Lead / orchestrator of the Orchestra agent team — read CLAUDE.md. We are LIVE in
 > front of an audience; the goal is to *show* how the team works on this very website
 > (`orchestra-site/`). Orchestrate — do NOT write feature code yourself.
