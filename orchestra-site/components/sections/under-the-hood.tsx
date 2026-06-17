@@ -62,15 +62,14 @@ export function UnderTheHood() {
         ))}
       </div>
 
-      {/* Copyable config snippets — paste-and-go */}
+      {/* Повторите сами — a paste-and-go stepped recipe */}
       <Reveal delay={0.05}>
-        <p className="mt-14 font-mono text-xs uppercase tracking-[0.18em] text-vermilion">
-          Скопируйте и вставьте
+        <p className="mt-16 font-mono text-xs uppercase tracking-[0.18em] text-vermilion">
+          Повторите сами
         </p>
         <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">
-          Три кусочка конфигурации, с которых начинается команда: флаг,
-          роль-субагент и обычная просьба на русском. Нажмите «Скопировать» —
-          и вставьте к себе.
+          Пять шагов, чтобы собрать такую же команду. Каждый блок скопирован один
+          в один из нашего репозитория — нажмите «Скопировать» и вставьте к себе.
         </p>
       </Reveal>
       <CodeSnippets />
