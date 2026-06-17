@@ -20,6 +20,18 @@ const unbounded = Unbounded({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+/*
+ * Same typeface, loaded as the variable font (full `wght` axis, no fixed
+ * weights) so a single element can animate `font-variation-settings: "wght"` on
+ * scroll. Exposed under its own variable and used ONLY by the «ОРКЕСТР»
+ * divider — the static instance above still backs every other heading.
+ */
+const unboundedVariable = Unbounded({
+  variable: "--font-unbounded-var",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
+
 const onest = Onest({
   variable: "--font-onest",
   subsets: ["latin", "cyrillic"],
@@ -61,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      className={`${unbounded.variable} ${onest.variable} ${jetbrainsMono.variable}`}
+      className={`${unbounded.variable} ${unboundedVariable.variable} ${onest.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-[100dvh] antialiased">
         <div className="grain" aria-hidden="true" />
