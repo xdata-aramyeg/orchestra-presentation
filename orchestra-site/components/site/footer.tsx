@@ -16,7 +16,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-paper-alt">
       <div className="mx-auto w-full max-w-[1200px] px-4 py-14 sm:px-8 sm:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div className="max-w-xl">
             <p className="font-display text-2xl leading-tight text-ink sm:text-3xl">
               Эту страницу спланировала, построила, протестировала и проверила
@@ -51,9 +51,20 @@ export function SiteFooter() {
               </Link>
             ))}
           </nav>
-          <p className="font-mono text-xs text-ink-muted">
-            © 2026 Orchestra. Самореферентная презентация, а не продукт.
-          </p>
+          <div className="flex items-center gap-3">
+            <span
+              className="hidden items-center gap-1.5 font-mono text-[11px] text-ink-muted sm:inline-flex"
+              aria-hidden="true"
+            >
+              нажмите
+              <kbd className="rounded border border-line bg-card px-1.5 py-0.5 text-ink-soft">
+                `
+              </kbd>
+            </span>
+            <p className="font-mono text-xs text-ink-muted">
+              © 2026 Orchestra. Самореферентная презентация, а не продукт.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
