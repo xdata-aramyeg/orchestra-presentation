@@ -35,11 +35,13 @@ export function AgentCard({ agent, cue }: { agent: Agent; cue?: number }) {
           />
         </div>
 
-        <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-ink">
-          {agent.handle}
-        </h3>
-        <p className="mt-1 font-mono text-xs uppercase tracking-[0.16em] text-ink-muted">
+        {/* Role is the headline — the thing you read first. */}
+        <h3 className="mt-4 font-display text-[1.35rem] leading-[1.12] font-semibold uppercase tracking-tight text-ink [overflow-wrap:break-word] sm:text-2xl">
           {agent.role}
+        </h3>
+        {/* The poetic name becomes a quoted subtitle. */}
+        <p className="mt-1.5 font-display text-sm font-medium text-ink-muted">
+          «{agent.handle}»
         </p>
         <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
           {agent.tagline}

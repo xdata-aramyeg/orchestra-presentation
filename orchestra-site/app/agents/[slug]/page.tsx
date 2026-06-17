@@ -29,7 +29,7 @@ export async function generateMetadata({
   const agent = getAgent(slug);
   if (!agent) return { title: "Агент не найден — Orchestra" };
   return {
-    title: `${agent.handle} — ${agent.role} · Orchestra`,
+    title: `${agent.role} · «${agent.handle}» — Orchestra`,
     description: agent.tagline,
   };
 }
@@ -72,13 +72,13 @@ export default async function AgentPage({ params }: PageParams) {
                 </p>
               </Reveal>
               <Reveal delay={0.08}>
-                <h1 className="mt-3 font-display text-5xl font-bold tracking-tight text-ink sm:text-6xl lg:text-7xl">
-                  {agent.handle}
+                <h1 className="mt-3 font-display text-4xl font-bold uppercase leading-[1.05] tracking-tight text-ink [overflow-wrap:break-word] sm:text-5xl lg:text-6xl">
+                  {agent.role}
                 </h1>
               </Reveal>
               <Reveal delay={0.12}>
-                <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-ink-muted">
-                  {agent.role}
+                <p className="mt-4 font-display text-xl font-medium text-ink-muted sm:text-2xl">
+                  «{agent.handle}»
                 </p>
               </Reveal>
             </div>
@@ -220,8 +220,11 @@ export default async function AgentPage({ params }: PageParams) {
               <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-ink-muted">
                 Предыдущий
               </span>
-              <span className="mt-0.5 block font-display text-lg font-semibold text-ink">
-                {prev.handle}
+              <span className="mt-0.5 block font-display text-base font-semibold uppercase leading-tight tracking-tight text-ink">
+                {prev.role}
+              </span>
+              <span className="mt-0.5 block font-mono text-[11px] text-ink-muted">
+                «{prev.handle}»
               </span>
             </span>
           </Link>
@@ -234,8 +237,11 @@ export default async function AgentPage({ params }: PageParams) {
               <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-ink-muted">
                 Следующий
               </span>
-              <span className="mt-0.5 block font-display text-lg font-semibold text-ink">
-                {next.handle}
+              <span className="mt-0.5 block font-display text-base font-semibold uppercase leading-tight tracking-tight text-ink">
+                {next.role}
+              </span>
+              <span className="mt-0.5 block font-mono text-[11px] text-ink-muted">
+                «{next.handle}»
               </span>
             </span>
             <ArrowRight

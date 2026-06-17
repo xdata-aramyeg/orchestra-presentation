@@ -49,15 +49,18 @@ export function TeamTeaser() {
                   size={40}
                   play="inView"
                 />
-                <span className="font-mono text-xs text-vermilion">
+                <span className="shrink-0 font-mono text-xs text-vermilion">
                   {agent.index}
                 </span>
-                <span className="font-display text-lg font-semibold text-ink">
-                  {agent.handle}
-                </span>
-                <span className="ml-auto font-mono text-xs uppercase tracking-[0.14em] text-ink-muted">
-                  {agent.role}
-                </span>
+                <div className="min-w-0">
+                  {/* Role leads; the poetic name follows as a quoted handle. */}
+                  <span className="block font-display text-base font-semibold uppercase leading-tight tracking-tight text-ink">
+                    {agent.role}
+                  </span>
+                  <span className="block font-mono text-[11px] text-ink-muted">
+                    «{agent.handle}»
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
