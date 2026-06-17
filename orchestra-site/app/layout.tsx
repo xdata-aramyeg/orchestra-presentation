@@ -5,6 +5,7 @@ import "@/components/avatars/avatars.css";
 import { SiteNav } from "@/components/site/nav";
 import { SiteFooter } from "@/components/site/footer";
 import { EasterTerminal } from "@/components/easter/terminal";
+import { PresenterHud } from "@/components/presenter/presenter-hud";
 
 /*
  * Cyrillic-capable type system (all three carry the `cyrillic` subset on Google
@@ -81,6 +82,7 @@ export default function RootLayout({
         <main>{children}</main>
         <SiteFooter />
         <EasterTerminal />
+        <PresenterHud />
       </body>
     </html>
   );
