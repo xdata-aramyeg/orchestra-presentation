@@ -47,7 +47,7 @@ export const Team = () => {
               alignItems: "center",
             }}
           >
-            <Avatar slug={s.slug} enter={enter} accent={accent} size={size} />
+            <Avatar slug={s.slug} enter={enter} accent={accent} size={size} phase={i * 13} />
             <div
               style={{
                 display: "flex",

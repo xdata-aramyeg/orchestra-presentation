@@ -1,34 +1,69 @@
-import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
+"use client";
+
+import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COLORS, FONTS } from "../theme";
 import { Avatar } from "../components/Avatar";
 import { Eyebrow } from "../components/Eyebrow";
 import { Caption } from "../components/Caption";
 import { ramp } from "../components/util";
+import { useGsapTimeline } from "../components/useGsapTimeline";
 
 /**
- * Scene 5 — Барьер держит. Both tracks run into a glowing vertical gate. The
- * Maestro raises the baton; the gate holds until two checks (page renders / API
- * answers) light up — then it drops.
+ * Scene 5 — Барьер держит. Both tracks push into a glowing vertical gate and
+ * *compress* against it (wind-up). The gate throbs under pressure while it holds;
+ * two checks (страница / API) light up; only then does the gate release — drops
+ * away — and the tracks surge through with an overshoot settle.
+ *
+ * The pressure-hold-release is multi-element timeline choreography → GSAP seek.
  */
 export const Barrier = () => {
   const frame = useCurrentFrame();
 
-  // tracks push toward the centre and stop at the gate
-  const push = ramp(frame, 8, 60);
-  const checkPage = ramp(frame, 90, 120);
-  const checkApi = ramp(frame, 110, 140);
+  // checks are frame-driven SVG stroke-draws (timed to the gate's hold)
+  const checkPage = ramp(frame, 92, 124);
+  const checkApi = ramp(frame, 116, 148);
   const bothLit = Math.min(checkPage, checkApi);
-  // gate glows while holding, then drops after both checks
-  const glow = interpolate(frame, [40, 90], [0.15, 0.9], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const drop = ramp(frame, 150, 185);
-  const gateY = interpolate(drop, [0, 1], [0, 520]);
-  const gateOpacity = interpolate(drop, [0, 1], [1, 0]);
 
-  const leftX = interpolate(push, [0, 1], [260, 760]);
-  const rightX = interpolate(push, [0, 1], [1660, 1160]);
+  const root = useGsapTimeline((tl) => {
+    // tracks push in and compress against the gate (back ease = slight squeeze)
+    tl.fromTo(
+      ".track-l",
+      { x: -260, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.95, ease: "back.out(2)" },
+      0.25,
+    )
+      .fromTo(
+        ".track-r",
+        { x: 260, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.95, ease: "back.out(2)" },
+        0.25,
+      )
+      // the gate throbs while it holds the pressure (a few calm cycles)
+      .fromTo(
+        ".gate",
+        { scaleY: 0.7, opacity: 0 },
+        { scaleY: 1, opacity: 1, duration: 0.5, ease: "power2.out" },
+        0.1,
+      )
+      .to(
+        ".gate",
+        {
+          scaleX: 1.9,
+          duration: 0.7,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: 3, // even # of legs → returns to scaleX:1 before release
+        },
+        1.4,
+      )
+      // RELEASE: gate drops away, tracks surge through with an overshoot settle
+      .to(".gate", { y: 540, opacity: 0, duration: 0.7, ease: "power3.in" }, 5.0)
+      .to(".track-l", { x: 150, duration: 0.8, ease: "back.out(1.4)" }, 5.05)
+      .to(".track-r", { x: -150, duration: 0.8, ease: "back.out(1.4)" }, 5.05);
+  });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.paper }}>
+    <AbsoluteFill ref={root} style={{ backgroundColor: COLORS.paper }}>
       <Eyebrow index={5} label="Барьер держит" />
 
       {/* the conductor holds the gate */}
@@ -36,45 +71,63 @@ export const Barrier = () => {
         <Avatar slug="maestro" enter={ramp(frame, 4, 30)} accent={ramp(frame, 30, 70)} size={170} />
       </div>
 
-      {/* the two approaching tracks */}
-      <div style={{ position: "absolute", left: leftX, top: 560, transform: "translate(-50%,-50%)" }}>
-        <div style={{ width: 220, height: 64, borderRadius: 12, border: `2px solid ${COLORS.line}`, background: COLORS.card, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONTS.mono, fontSize: 24, color: COLORS.inkSoft }}>
-          FE готов
-        </div>
+      {/* the two approaching tracks (GSAP owns transform → no CSS centering) */}
+      <div className="track-l" style={{ position: "absolute", left: 420, top: 528, opacity: 0 }}>
+        <TrackTag>FE готов</TrackTag>
       </div>
-      <div style={{ position: "absolute", left: rightX, top: 560, transform: "translate(-50%,-50%)" }}>
-        <div style={{ width: 220, height: 64, borderRadius: 12, border: `2px solid ${COLORS.line}`, background: COLORS.card, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONTS.mono, fontSize: 24, color: COLORS.inkSoft }}>
-          BE готов
-        </div>
+      <div className="track-r" style={{ position: "absolute", left: 1280, top: 528, opacity: 0 }}>
+        <TrackTag>BE готов</TrackTag>
       </div>
 
-      {/* the gate */}
+      {/* the gate (GSAP-controlled transform/opacity) */}
       <div
+        className="gate"
         style={{
           position: "absolute",
-          left: 958,
-          top: 360 + gateY,
+          left: 956,
+          top: 360,
           width: 6,
           height: 360,
           background: COLORS.vermilion,
-          opacity: gateOpacity,
-          boxShadow: `0 0 ${30 * glow}px ${10 * glow}px ${COLORS.vermilion}`,
+          boxShadow: `0 0 26px 8px ${COLORS.vermilion}`,
           borderRadius: 4,
+          transformOrigin: "center top",
+          opacity: 0,
         }}
       />
 
-      {/* two checks */}
-      <div style={{ position: "absolute", left: 960, top: 420, transform: "translateX(-50%)", display: "flex", gap: 60 }}>
+      {/* two checks (frame-driven) */}
+      <div style={{ position: "absolute", left: 960, top: 408, transform: "translateX(-50%)", display: "flex", gap: 60 }}>
         <Check label="страница" v={checkPage} />
         <Check label="API" v={checkApi} />
       </div>
 
-      <Caption from={150} kicker="Барьер" accent={bothLit > 0.9}>
+      <Caption from={155} kicker="Барьер" accent={bothLit > 0.9}>
         Барьер: фича готова. Дальше — только когда и страница, и API живы.
       </Caption>
     </AbsoluteFill>
   );
 };
+
+const TrackTag = ({ children }: { children: React.ReactNode }) => (
+  <div
+    style={{
+      width: 220,
+      height: 64,
+      borderRadius: 12,
+      border: `2px solid ${COLORS.line}`,
+      background: COLORS.card,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontFamily: FONTS.mono,
+      fontSize: 24,
+      color: COLORS.inkSoft,
+    }}
+  >
+    {children}
+  </div>
+);
 
 const Check = ({ label, v }: { label: string; v: number }) => (
   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: 0.4 + 0.6 * v }}>

@@ -1,5 +1,7 @@
+import { useCurrentFrame } from "remotion";
 import { GEOMETRY, type AvatarSlug } from "./avatarGeometry";
 import { COLORS, FONTS } from "../theme";
+import { breathe } from "./util";
 
 type AvatarProps = {
   slug: AvatarSlug;
@@ -13,6 +15,13 @@ type AvatarProps = {
   caption?: string;
   /** Dim to ~idle (used for the "devs idle during QA" beat). */
   idle?: boolean;
+  /**
+   * Phase offset (frames) for the breathing loop so a row of avatars doesn't
+   * bob in unison. Defaults to 0.
+   */
+  phase?: number;
+  /** Disable the secondary breathing motion (for tight grid cards). */
+  still?: boolean;
 };
 
 const clamp = (v: number) => Math.max(0, Math.min(1, v));
@@ -29,11 +38,22 @@ export const Avatar = ({
   size = 200,
   caption,
   idle = false,
+  phase = 0,
+  still = false,
 }: AvatarProps) => {
+  const frame = useCurrentFrame();
   const e = clamp(enter);
   const geo = GEOMETRY[slug];
   const scale = 0.88 + 0.12 * e;
   const opacity = (idle ? 0.28 : 1) * e;
+
+  // Secondary motion: a calm 5s breathing loop (±2.4px lift, hair of scale) so
+  // the emblem reads "alive but ~80% calm" — matches the polished site avatars.
+  // Settled in only after entry (× e) and frozen when idle.
+  const settled = still || idle ? 0 : e;
+  const b = breathe(frame, 5, phase);
+  const bobY = b * 2.4 * settled;
+  const breatheScale = 1 + b * 0.006 * settled;
 
   return (
     <div
@@ -52,7 +72,10 @@ export const Avatar = ({
         width={size}
         height={size}
         viewBox="0 0 200 200"
-        style={{ overflow: "visible" }}
+        style={{
+          overflow: "visible",
+          transform: `translateY(${bobY}px) scale(${breatheScale})`,
+        }}
       >
         {geo.ink}
         {geo.accent(idle ? 0 : accent)}

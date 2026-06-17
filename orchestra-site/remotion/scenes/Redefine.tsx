@@ -59,7 +59,7 @@ export const Redefine = () => {
                 transform: `translateY(${(1 - enter) * 30}px)`,
               }}
             >
-              <Avatar slug={c.slug} enter={enter} accent={accent} size={130} />
+              <Avatar slug={c.slug} enter={enter} accent={accent} size={130} phase={i * 11} />
               <span
                 style={{
                   fontFamily: FONTS.mono,
