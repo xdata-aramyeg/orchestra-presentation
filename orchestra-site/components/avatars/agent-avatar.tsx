@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "motion/react";
-import { EMBLEMS, type AvatarSlug } from "./emblems";
+import { EMBLEMS, FRAMES, type AvatarSlug } from "./emblems";
 
 const NAMED_SIZES = { sm: 44, md: 72, lg: 160 } as const;
 
@@ -87,11 +87,14 @@ export function AgentAvatar({
       ref={ref}
       role="img"
       aria-label={emblem.label}
+      data-slug={slug}
       viewBox="0 0 200 200"
       width={px}
       height={px}
       className={`av-svg ${phase} ${className ?? ""}`}
     >
+      {/* per-agent identity frame (decorative); persists across action cues */}
+      <g aria-hidden="true">{FRAMES[slug]}</g>
       <g key={runKey}>{emblem.body}</g>
     </svg>
   );

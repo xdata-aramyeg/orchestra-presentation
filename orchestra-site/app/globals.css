@@ -23,6 +23,21 @@
   --color-vermilion: #c5482f;
   --color-vermilion-soft: #e9d8d0; /* tinted accent surface */
 
+  /*
+   * Per-agent identity hues — muted, desaturated, paper-friendly editorial tones,
+   * curated (not random). Each is AA-legible on the warm paper bg (#FBFAF7) and
+   * perceptually distinct from the others AND from the vermilion accent. These
+   * tint an avatar's frame + line-art so each agent reads as "their colour";
+   * vermilion stays reserved for the single LIVE/active stroke in every emblem.
+   */
+  --color-av-maestro: #211c17; /* deep ink / near-black — the conductor's anchor */
+  --color-av-librettist: #8a6312; /* ochre / muted mustard — PM */
+  --color-av-scenographer: #3c5a82; /* slate-blue — Frontend */
+  --color-av-machinist: #8c5836; /* warm clay / terracotta — Backend */
+  --color-av-diapason: #566e48; /* sage / muted green — QA */
+  --color-av-reviewer: #6a4b60; /* plum-grey / muted aubergine — Reviewer */
+  --color-av-chronicler: #5b6168; /* graphite / cool grey — Chronicler */
+
   /* Hairlines */
   --color-line: rgba(26, 23, 20, 0.12);
   --color-line-strong: rgba(26, 23, 20, 0.22);

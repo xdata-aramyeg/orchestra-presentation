@@ -18,15 +18,43 @@
   display: block;
 }
 
+/*
+ * Per-agent identity hue. AgentAvatar sets data-slug on the <svg>; each maps to
+ * a curated muted token (app/globals.css). --av-ink tints the line-art + frame;
+ * it falls back to the neutral ink so an un-mapped avatar still renders.
+ * Vermilion stays reserved for the live/active stroke (.av-acc / .av-accfill).
+ */
+.av-svg[data-slug="maestro"] {
+  --av-ink: var(--color-av-maestro);
+}
+.av-svg[data-slug="librettist"] {
+  --av-ink: var(--color-av-librettist);
+}
+.av-svg[data-slug="scenographer"] {
+  --av-ink: var(--color-av-scenographer);
+}
+.av-svg[data-slug="machinist"] {
+  --av-ink: var(--color-av-machinist);
+}
+.av-svg[data-slug="diapason"] {
+  --av-ink: var(--color-av-diapason);
+}
+.av-svg[data-slug="reviewer"] {
+  --av-ink: var(--color-av-reviewer);
+}
+.av-svg[data-slug="chronicler"] {
+  --av-ink: var(--color-av-chronicler);
+}
+
 .av-line {
   fill: none;
-  stroke: var(--color-ink);
+  stroke: var(--av-ink, var(--color-ink));
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .av-faint {
-  stroke: var(--color-ink);
+  stroke: var(--av-ink, var(--color-ink));
   opacity: 0.22;
 }
 .av-acc {
@@ -34,6 +62,32 @@
 }
 .av-accfill {
   fill: var(--color-vermilion);
+}
+
+/* ── Identity frame: a QUIET per-agent container; the glyph is the hero ──
+ * A faint tint of the agent hue + a thin, half-strength stroke so the bold
+ * line-art reads first and the silhouette only second. */
+.av-frame {
+  fill: color-mix(in srgb, var(--av-ink, var(--color-ink)) 5%, transparent);
+  stroke: color-mix(in srgb, var(--av-ink, var(--color-ink)) 42%, transparent);
+  stroke-width: 2.75;
+  stroke-linejoin: round;
+  transform-box: view-box;
+  transform-origin: 100px 100px; /* viewBox centre (min 0,0 → no offset) */
+}
+/* The frame eases in with the line-art draw (gentle scale + fade, no layout). */
+.av-in .av-frame {
+  animation: av-frame-in 0.55s var(--av-curve) both;
+}
+@keyframes av-frame-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ── Entrance: every stroked element draws itself in (pathLength-normalised) ── */
@@ -51,7 +105,7 @@
 /* ════════ Маэстро — baton beats 1-2-3 (anticipation + follow-through) ════════ */
 .mae-baton {
   transform-box: view-box;
-  transform-origin: 62px 152px;
+  transform-origin: 74px 120px; /* the baton handle-grip */
   transform: rotate(7deg);
 }
 .mae-d1,
@@ -152,7 +206,7 @@
 }
 .lib-pen {
   transform-box: fill-box;
-  transform: translate(96px, -7px);
+  transform: translate(0, 0); /* resolved: pen rests at the right of the line */
 }
 .av-run .lib-ul {
   animation: lib-ul 7s var(--av-curve) infinite;
@@ -176,20 +230,20 @@
 @keyframes lib-pen {
   0%,
   8% {
-    transform: translate(0, 4px);
-  }
+    transform: translate(-62px, 6px);
+  } /* pen at the start of the line, lowered to write */
   12% {
-    transform: translate(-3px, 6px);
+    transform: translate(-66px, 8px);
   } /* anticipation — pen dips back before the stroke */
   50% {
-    transform: translate(96px, 4px);
-  }
+    transform: translate(0, 6px);
+  } /* swept across to the end */
   60%,
   90% {
-    transform: translate(96px, -7px);
-  } /* follow-through — lifts and holds */
+    transform: translate(0, 0);
+  } /* follow-through — lifts and holds at rest */
   100% {
-    transform: translate(0, 4px);
+    transform: translate(-62px, 6px);
   }
 }
 
@@ -204,29 +258,24 @@
 }
 @keyframes scn-frame {
   0% {
-    transform: translateX(-128px);
-    opacity: 0;
+    transform: translateX(-16px);
+    opacity: 0.7;
   }
-  9% {
-    opacity: 1;
-  }
-  33% {
-    transform: translateX(0);
-  } /* spring snap (curve overshoots, then settles) */
-  88% {
+  20%,
+  90% {
     transform: translateX(0);
     opacity: 1;
-  }
+  } /* drives in and springs into register (curve overshoots, then settles) */
   100% {
-    transform: translateX(-128px);
-    opacity: 0;
-  }
+    transform: translateX(-16px);
+    opacity: 0.7;
+  } /* eases back to the start so the loop never blanks the stage */
 }
 
 /* ════════ Машинист — gear turns with detents + caret blink ════════ */
 .mac-gear {
   transform-box: view-box;
-  transform-origin: 78px 76px;
+  transform-origin: 78px 80px;
   transform: rotate(0deg);
 }
 .mac-caret {
@@ -415,7 +464,7 @@
 /* ════════ Рецензент — magnifier sweeps then stamps a ✓ (anticipation) ════════ */
 .rev-glass {
   transform-box: fill-box;
-  transform: translate(68px, 58px);
+  transform: translate(44px, 38px);
 }
 .rev-check {
   stroke-dasharray: 1;
@@ -437,11 +486,11 @@
     transform: translate(-6px, -4px);
   } /* anticipation — pull back before the sweep */
   60% {
-    transform: translate(60px, 52px);
+    transform: translate(40px, 34px);
   }
   74%,
   90% {
-    transform: translate(68px, 58px);
+    transform: translate(44px, 38px);
   } /* settle at the end of the line */
   100% {
     transform: translate(0, 0);
@@ -469,7 +518,7 @@
 /* ════════ Хроникёр — clapperboard winds up and claps on the beat ════════ */
 .chr-stick {
   transform-box: view-box;
-  transform-origin: 50px 92px;
+  transform-origin: 50px 81px; /* the clapper hinge (left of the stick) */
   transform: rotate(-22deg); /* resolved: the slate sits open, ready */
 }
 .av-run .chr-stick {
@@ -502,6 +551,7 @@
  * adds the run/in classes under reduced motion; this is the belt-and-suspenders.)
  */
 @media (prefers-reduced-motion: reduce) {
+  .av-in .av-frame,
   .av-in [pathLength],
   .av-run :is(
       .mae-baton,
