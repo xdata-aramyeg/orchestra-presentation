@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { FollowForm } from "@/components/follow/follow-form";
 
+/**
+ * Honest build signature — the real git short-hash + date are baked at build
+ * time via NEXT_PUBLIC_* env vars (see the `build` script). In dev/SSR without
+ * those vars we fall back gracefully so nothing renders `undefined`.
+ */
+const BUILD_HASH = process.env.NEXT_PUBLIC_BUILD_HASH ?? "dev";
+const BUILD_DATE = process.env.NEXT_PUBLIC_BUILD_DATE ?? "2026-06-17";
+
 const FOOTER_LINKS = [
   { href: "/", label: "Главная" },
   { href: "/goal", label: "Цель" },
@@ -66,6 +74,11 @@ export function SiteFooter() {
             </p>
           </div>
         </div>
+
+        <p className="mt-6 font-mono text-[11px] text-ink-muted">
+          Сделано командой агентов · build{" "}
+          <span className="text-vermilion">{BUILD_HASH}</span> · {BUILD_DATE}
+        </p>
       </div>
     </footer>
   );

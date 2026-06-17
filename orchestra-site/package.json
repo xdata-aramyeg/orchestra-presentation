@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NEXT_PUBLIC_BUILD_HASH=$(git rev-parse --short HEAD) NEXT_PUBLIC_BUILD_DATE=$(date +%Y-%m-%d) next build",
     "start": "next start",
     "lint": "eslint"
   },
