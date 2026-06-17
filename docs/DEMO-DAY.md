@@ -60,17 +60,27 @@ You can have it improve **this very site** during the talk.
 - (Optional, looks great) you're already in tmux from the «Повторите сами» section — the
   teammates split into their own panes so the audience watches them work in parallel.
 
-### Quick version — the roll call (best for *showing the spawn*)
-Fast, safe, no code touched — the team just assembles and checks in. Paste verbatim:
-> You are the Lead / orchestrator of the Orchestra agent team — read CLAUDE.md. We're live on
-> stage and I want to SHOW the team assembling. Spawn all six teammates — pm, frontend, backend,
-> qa, reviewer, chronicler — and have EACH send back ONE short line introducing itself: its role,
-> the files it owns, and one line of personality, in Russian (our project voice). Do NOT build
-> anything or touch any code — this is just the team checking in. When all six have reported,
-> print a one-line roster and stop.
+### Quick version — the roll call + QA drives the live site (best for *showing the spawn*)
+Fast, safe, no code touched — the team assembles, then QA demonstrates real browser control on the
+**deployed** site. Paste verbatim:
+> You are the Lead / orchestrator of the Orchestra agent team — read CLAUDE.md. We're live on stage.
+> 1. Spawn all six teammates — pm, frontend, backend, qa, reviewer, chronicler — and have EACH send
+>    back ONE short line introducing itself: its role, the files it owns, and one line of
+>    personality, in Russian (our project voice).
+> 2. Then have the **qa** teammate show real browser control on our LIVE site: using the Chrome MCP,
+>    open https://orchestra-presentation.vercel.app , go to /agents and trigger the avatar «Сыграть»
+>    choreography, then press the backtick key to open the hidden terminal and run `team`. Capture a
+>    screenshot or short gif as evidence and report what it saw. READ-ONLY — do not submit the
+>    waitlist or change anything.
+> Do NOT touch any code. When QA is done, print a one-line roster + QA's verdict and stop.
 
-In tmux you'll watch six panes spring open as they spawn; each reports in; done in ~30–60s. Great
-"the team is real" beat without the risk of a live build.
+In tmux you'll watch six panes spring open as they spawn, each reports in, then QA's pane drives a
+real Chrome window on the live URL — the audience sees the agent *click through your deployed site*.
+~1–2 min, no risk to code or the prod DB.
+
+(Want the full-stack money shot instead? Tell QA to **submit a throwaway email to the live waitlist**
+and read back "You're #N" — that proves browser → API → Supabase end-to-end. Then reset the counter
+afterward: `truncate table public.waitlist restart identity;` via the Supabase MCP/SQL editor.)
 
 ### Full version — the team does real work (paste this verbatim)
 > You are the Lead / orchestrator of the Orchestra agent team — read CLAUDE.md. We are LIVE in
