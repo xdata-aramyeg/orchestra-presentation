@@ -253,3 +253,65 @@ count `Cbefore` and the position shown.
 - Network statuses (`201` / `400` / `409` / `200`) for the relevant submits.
 - Console output (clean or the exact errors).
 - GIFs for TC1–TC2 (happy path) and TC5/TC7/TC8 (dedupe).
+
+---
+
+# Wave 2 — Six-change test plan (avatars, role-first cards, presenter mode, reproduce-it, film audio, cross-cutting)
+
+> Written during QA idle (browser blocked on multi-browser selection gate). Source: Lead's
+> wave brief. App under test: prod build at **http://localhost:4000**. Execute once a single
+> Chrome is selected. Console policy: 0 ERRORS allowed; the single Remotion **license WARNING**
+> is expected/benign (not a fail). Responsive checks at **375px** width.
+
+## W1 — Avatars distinct (/agents)
+- **W1.1** Load /agents, scroll fully so all 7 cards animate in. Each of the 7 avatars reads as a
+  DISTINCT character: own muted hue AND own frame shape (deep-ink, ochre, slate-blue, clay, sage,
+  plum-grey, graphite). Vermilion appears ONLY as the moving/live accent, not a base avatar hue.
+  Expected: 7 visually distinguishable avatars, not one uniform set. Evidence: zoomed screenshot.
+- **W1.2** Click «Сыграть» (play/tuning-up). Expected: conducted choreography animates all 7;
+  0 console errors during/after. Evidence: before/after screenshot + console read.
+
+## W2 — Role-first card hierarchy (/agents, /agents/maestro, home teaser /)
+- **W2.1** /agents: each card leads with ROLE as headline (ЛИД/ОРКЕСТРАТОР, PM/АНАЛИТИК, FRONTEND,
+  BACKEND, QA, REVIEWER, MOTION/ВИДЕО); poetic name («Маэстро», «Сценограф»…) is a smaller subtitle.
+  Scroll to reveal all 7. Evidence: screenshots of each card.
+- **W2.2** /agents/maestro: detail header is role-first (role headline, name subtitle).
+- **W2.3** Home / team teaser: same role-first hierarchy.
+
+## W3 — Presenter mode (/present + P hotkey)
+- **W3.1** /present: step ALL 14 cues via → and ←, then Space, then on-screen Prev/Next. Each cue
+  shows: section label, ГОВОРИТЕ (SAY) line, 💡 (DROP) insider fact, counter «BEAT n / 14». Progress
+  rail advances. Russian throughout. Evidence: screenshots at beats 1, ~7, 14.
+- **W3.2** Home /: press `P` → presenter HUD overlay opens; ←→ advance; Esc and P close it.
+- **W3.3** Focus guard: focus the waitlist email input, type, press `P` → HUD must NOT open (only
+  fires when not in an input). Evidence: screenshot showing typed "p" in field, no overlay.
+- **W3.4** Collision: on home press backtick (`) → hidden terminal opens normally; P does not
+  interfere with terminal. Evidence: screenshots.
+
+## W4 — Reproduce-it recipe (home «Повторите сами» / «под капотом»)
+- **W4.1** 5 numbered steps render: (1) settings.local.json, (2) RU instruction to research
+  agent-teams docs + save docs/agent-teams.md, (3) 7 agent role blocks (tabs/accordion), (4)
+  orchestrator GOAL + DOES/DOES-NOT spec, (5) first-wave spawn prompt.
+- **W4.2** Click several «Скопировать» + «Скопировать все» → feedback flips to «Скопировано ✓».
+  Verify via button state. Deep clipboard assertion optional.
+- **W4.3** At 375px: no horizontal overflow inside code blocks (scrollWidth <= clientWidth on the
+  page; code blocks scroll internally, not the page).
+
+## W5 — Film audio (/film) — KEY NEW
+- **W5.1** Load /film. Nothing plays on load — Player is poster-first; any <audio>/<video> element
+  paused=true, currentTime=0. Evidence: JS read of media element state.
+- **W5.2** Click play → playback starts; verify programmatically: media element paused=false and
+  currentTime advances over ~2s. 0 console errors during playback. Bed loops; SFX wired to QA-fork
+  beat, barrier beat, resolve/end. Evidence: two JS reads of currentTime (t0 < t1) + console read.
+- **W5.3** NOTE in report: subjective audio QUALITY (mix, loop seam, SFX timing feel) needs the
+  HUMAN's ears — QA verifies playback STATE only, not fidelity.
+
+## W6 — Cross-cutting
+- **W6.1** Console 0 ERRORS on /, /agents, /present, /film (license WARNING exempt). Evidence:
+  console read per route.
+- **W6.2** 0 horizontal overflow at 375px on /, /agents, /present, and the reproduce-it section.
+  Verify document.documentElement.scrollWidth <= window.innerWidth per route. Evidence: JS reads.
+
+### Wave-2 execution order
+tabs_context → select single Chrome → new tab → /agents (W1,W2) → /agents/maestro (W2.2) →
+/ (W2.3, W3.2-3.4, W4) → /present (W3.1) → /film (W5) → 375px sweep (W6.2) → console sweep (W6.1).

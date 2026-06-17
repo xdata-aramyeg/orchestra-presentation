@@ -6,6 +6,8 @@ The team's shared, continuously-improved knowledge. **Owned by the PM**, read by
 - **`workflow-discipline.md`** — the hard coordination rules (barriers, idle-during-QA, gates).
 - **`course-corrections/`** — a running log of steering and lessons learned, so the team
   self-corrects and never repeats a mistake.
+- **`presenter-cues-ru.md`** — printable cue cards for on-screen presenter mode (mirror of
+  `orchestra-site/content/presenter-cues.ts`); one cue per demo-day beat (SAY · DROP · action).
 
 ## How the team uses this
 
