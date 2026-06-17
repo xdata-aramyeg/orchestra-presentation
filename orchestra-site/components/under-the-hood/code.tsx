@@ -7,7 +7,7 @@ import { type ReactNode } from "react";
  */
 export function Mono({ children }: { children: ReactNode }) {
   return (
-    <code className="rounded-md bg-shell/80 px-1.5 py-0.5 font-mono text-[0.82em] whitespace-nowrap text-ink">
+    <code className="rounded-md bg-shell/80 px-1.5 py-0.5 font-mono text-[0.82em] text-ink [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
       {children}
     </code>
   );

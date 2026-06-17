@@ -45,7 +45,7 @@ export default function AgentsIndexPage() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-12 font-mono text-[13px] leading-relaxed text-ink-muted">
+          <p className="mt-12 font-mono text-[13px] leading-relaxed text-ink-muted [overflow-wrap:anywhere]">
             slug маршрутов: /agents/maestro · /agents/librettist ·
             /agents/scenographer · /agents/machinist · /agents/diapason ·
             /agents/reviewer · /agents/chronicler

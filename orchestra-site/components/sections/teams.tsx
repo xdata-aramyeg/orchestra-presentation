@@ -100,7 +100,7 @@ export function TeamsSection() {
       </div>
 
       <Reveal delay={0.1}>
-        <p className="mt-8 max-w-2xl font-mono text-[13px] leading-relaxed text-ink-muted">
+        <p className="mt-8 max-w-2xl font-mono text-[13px] leading-relaxed text-ink-muted [overflow-wrap:anywhere]">
           Команды агентов — экспериментальная функция Claude Code, по умолчанию
           выключена. Нужна версия v2.1.32+ и флаг
           CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1.

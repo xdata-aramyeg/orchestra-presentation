@@ -69,6 +69,12 @@
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum";
   }
+
+  /* Long, space-less code tokens (flags, paths, tool ids) must wrap rather than
+   * force horizontal overflow on narrow viewports. */
+  code {
+    overflow-wrap: anywhere;
+  }
 }
 
 /*
