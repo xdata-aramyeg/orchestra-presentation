@@ -46,11 +46,47 @@ PORT=4000 npm run start # → http://localhost:4000
 12. **Finale** — submit a real email in the waitlist → «You're #N». Then point at the **footer build hash**:
     "that's the real commit of this exact build."
 
-## (Optional) Run the team live
-If you want to show the agents *working*, the team is real: `orchestra-team/`-style roles are
-in `.claude/agents/*.md` (pm, frontend, backend, qa, reviewer, chronicler), agent-teams enabled
-via `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in `.claude/settings.local.json`. Knowledge +
-course-corrections live in `knowledge/`. See `docs/agent-teams.md` for the real mechanics.
+## Run the team LIVE on stage
+
+The team is real (`.claude/agents/*.md` — pm, frontend, backend, qa, reviewer, chronicler;
+agent-teams enabled via `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in `.claude/settings.local.json`).
+You can have it improve **this very site** during the talk.
+
+### Setup (before you start the segment)
+- In one terminal pane, run the site in **dev** so the audience sees edits appear live:
+  `cd orchestra-site && npm run dev` (→ localhost:3000). Hot-reload shows each change instantly.
+- In another pane, start Claude Code **from the repo root** (`AgentTeams/`, where `CLAUDE.md`
+  + `.claude/agents` + the agent-teams flag live): run `claude`.
+- (Optional, looks great) you're already in tmux from the «Повторите сами» section — the
+  teammates split into their own panes so the audience watches them work in parallel.
+
+### The kickoff prompt — paste this verbatim
+> You are the Lead / orchestrator of the Orchestra agent team — read CLAUDE.md. We are LIVE in
+> front of an audience; the goal is to *show* how the team works on this very website
+> (`orchestra-site/`). Orchestrate — do NOT write feature code yourself.
+>
+> Run a short, safe, narrated loop:
+> 1. Work on a throwaway branch `live-demo` so everything is reversible.
+> 2. As Lead, pick ONE small, low-risk, self-contained VISUAL improvement (a micro-interaction,
+>    a hover detail, a spacing/typography polish, a small accent). Do NOT touch the backend / API /
+>    DB / waitlist, the Remotion film, or the build config.
+> 3. Assign it to the `frontend` agent; narrate what's happening. Frontend stays in its own UI
+>    files and must keep the build clean, 0 console errors, and 0 horizontal overflow at 375px.
+> 4. BARRIER: when frontend reports done, it goes idle and `qa` tests the change in a real browser
+>    and reports PASS/FAIL with evidence. Nothing else edits code while QA runs (idle-during-QA).
+> 5. PASS → `reviewer` (read-only) reads the diff. FAIL → back to `frontend`, then re-QA.
+> 6. Summarize what shipped in one line, then STOP and wait for me to say "next" before the next
+>    improvement. Keep each cycle small and quick — this is a live demo, not a marathon.
+>
+> Begin now: announce the team, pick the first improvement, and assign it.
+
+Say **"next"** to run another cycle. (Want it hands-off instead? add *"repeat 3 cycles without
+pausing"* — but pausing reads better on stage so you can narrate each barrier.)
+
+### Teardown (after the segment)
+- Discard the demo work: `git checkout master && git branch -D live-demo`
+  (or `git checkout -b keep-demo` first if you liked a change and want to keep it).
+- See `docs/agent-teams.md` for the real mechanics; `knowledge/course-corrections/` for the lessons.
 
 ## Backups / restore (nothing is at risk)
 - **Tags** (milestones): `verified-milestone-film`, `milestone-film3d`, `milestone-terminal`, … (`git tag`).
