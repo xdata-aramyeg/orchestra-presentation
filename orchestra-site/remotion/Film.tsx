@@ -1,6 +1,7 @@
 import { AbsoluteFill, Series } from "remotion";
 import { COLORS } from "./theme";
 import { GrainOverlay } from "./components/GrainOverlay";
+import { FilmAudio } from "./components/FilmAudio";
 import { Brief } from "./scenes/Brief";
 import { Team } from "./scenes/Team";
 import { OrgGraph3D } from "./scenes/OrgGraph3D";
@@ -38,6 +39,7 @@ export const Film = () => (
       <Series.Sequence durationInFrames={180}><SiteAssembles /></Series.Sequence>
       <Series.Sequence durationInFrames={90}><FilmToo /></Series.Sequence>
     </Series>
+    <FilmAudio />
     <GrainOverlay />
   </AbsoluteFill>
 );
